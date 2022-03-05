@@ -497,37 +497,294 @@ class Index
         $textrun->addImage(PUB . '/image/s2.png', ["width" => 450, 'height' => 50]);
         $section->addText("    本估价项目采用方法二，采集了可比实例对应月度小区的普通多层物业类型的挂牌均价，交易日期修正计算表如下：", 'eightF', 'w100');
 
-        $fancyTableStyleName = 'table3';
+        $fancyTableStyleName = 'table4';
         $fancyTableStyle = array(
             'borderSize' => 1,
         );
 
         $fontStyle = array('bold'=>false, 'align'=>'center', 'size' => 11);//文字样式
-        $cellColSpan = array('gridSpan' => 2, 'valign' => 'center'); // 单元格列合并
-        $cellHCentered = array('alignment' => Jc::CENTER); // 水平居中
 
         $phpWord->addTableStyle($fancyTableStyleName, $fancyTableStyle, []);
         $table = $section->addTable($fancyTableStyleName);
 
         $table->addRow(200);
-        $cell2 = $table->addCell(4400, $cellColSpan);
-        $textrun2 = $cell2->addTextRun($cellHCentered);
-        $textrun2->addText('评估方法/估价方法');
-        $table->addCell(4400)->addText('比较法',$fontStyle);
+        $table->addCell(2500)->addText('内容',$fontStyle);
+        $table->addCell(2500)->addText('标准房',$fontStyle);
+        $table->addCell(2500)->addText('可比实例A',$fontStyle);
+        $table->addCell(2500)->addText('可比实例B',$fontStyle);
+        $table->addCell(2500)->addText('可比实例C',$fontStyle);
+        $table->addCell(2500)->addText('可比实例D',$fontStyle);
 
 
         $row = $table->addRow();
-        $row->addCell(2000, array('gridSpan' => 1, 'vMerge' => 'restart'))->addText('评估结果');
-        $row->addCell(1000)->addText('总价（万元）');
-        $table->addCell(2200)->addText('26.93',$fontStyle);
+        $table->addCell(2200)->addText('交易时间（估价时点）',$fontStyle);
+        $table->addCell(2200)->addText('2021.6.1',$fontStyle);
+        $table->addCell(2200)->addText('2021.5.12',$fontStyle);
+        $table->addCell(2200)->addText('2021.3.16',$fontStyle);
+        $table->addCell(2200)->addText('2021.5.2',$fontStyle);
+        $table->addCell(2200)->addText('2021.4.15',$fontStyle);
 
 
         $row = $table->addRow();
-        $row->addCell(2000, array('vMerge' => 'continue', 'gridSpan' => 1));
-        $row->addCell(1000)->addText('单价（元/m2）');
+        $table->addCell(2200)->addText('交易单价 (元/㎡)',$fontStyle);
+        $table->addCell(2200)->addText('/',$fontStyle);
+        $table->addCell(2200)->addText('2990',$fontStyle);
+        $table->addCell(2200)->addText('2660',$fontStyle);
         $table->addCell(2200)->addText('2710',$fontStyle);
+        $table->addCell(2200)->addText('2530',$fontStyle);
+
+        $row = $table->addRow();
+        $table->addCell(2200)->addText('对应时点二手房均价',$fontStyle);
+        $table->addCell(2200)->addText('3412',$fontStyle);
+        $table->addCell(2200)->addText('3437',$fontStyle);
+        $table->addCell(2200)->addText('3370',$fontStyle);
+        $table->addCell(2200)->addText('3437',$fontStyle);
+        $table->addCell(2200)->addText('3370',$fontStyle);
+
+        $row = $table->addRow();
+        $table->addCell(2200)->addText('交易日期修正',$fontStyle);
+        $table->addCell(2200)->addText('3412/3412',$fontStyle);
+        $table->addCell(2200)->addText('3412/3437',$fontStyle);
+        $table->addCell(2200)->addText('3412/3370',$fontStyle);
+        $table->addCell(2200)->addText('3412/3437',$fontStyle);
+        $table->addCell(2200)->addText('3412/3370',$fontStyle);
+
+        $row = $table->addRow();
+        $table->addCell(2200)->addText('交易日期修正值',$fontStyle);
+        $table->addCell(2200)->addText('1',$fontStyle);
+        $table->addCell(2200)->addText('0.9927',$fontStyle);
+        $table->addCell(2200)->addText('1.0125',$fontStyle);
+        $table->addCell(2200)->addText('0.9927',$fontStyle);
+        $table->addCell(2200)->addText('1.0125',$fontStyle);
+
+        $section->addText("    本报告标准房的评估价值时点为2021年06月01日，标准房附近相似物业类型小区对应时点的6月二手房挂牌均价为3412元/㎡。", 'eightF', 'w100');
 
 
+        $fancyTableStyleName = 'table5';
+        $fancyTableStyle = array(
+            'borderSize' => 1,
+        );
+
+        $fontStyle = array('bold'=>false, 'align'=>'center', 'size' => 11);//文字样式
+
+        $phpWord->addTableStyle($fancyTableStyleName, $fancyTableStyle, []);
+        $table = $section->addTable($fancyTableStyleName);
+
+        $table->addRow(200);
+        $table->addCell(2500)->addText('标准房',$fontStyle);
+        $table->addCell(2500)->addImage('http://blog.aaayun.cc/logo.png', ["width" => 450, 'height' => 150]);
+        $table->addRow(200);
+        $table->addCell(2500)->addText('可比实例A',$fontStyle);
+        $table->addCell(2500)->addImage('http://blog.aaayun.cc/logo.png', ["width" => 450, 'height' => 150]);
+        $table->addRow(200);
+        $table->addCell(2500)->addText('可比实例B',$fontStyle);
+        $table->addCell(2500)->addImage('http://blog.aaayun.cc/logo.png', ["width" => 450, 'height' => 150]);
+        $table->addRow(200);
+        $table->addCell(2500)->addText('可比实例C',$fontStyle);
+        $table->addCell(2500)->addImage('http://blog.aaayun.cc/logo.png', ["width" => 450, 'height' => 150]);
+        $table->addRow(200);
+        $table->addCell(2500)->addText('可比实例D',$fontStyle);
+        $table->addCell(2500)->addImage('http://blog.aaayun.cc/logo.png', ["width" => 450, 'height' => 150]);
+
+        $section->addText("    3、实体因素修正", 'eightF', 'w100');
+        $section->addText("    （1）住宅房屋层次因素系数表", 'eightF', 'w100');
+
+        $fancyTableStyleName = 'table5';
+        $fancyTableStyle = array(
+            'borderSize' => 1,
+        );
+
+        $fontStyle = array('bold'=>false, 'align'=>'center', 'size' => 11);//文字样式
+
+        $phpWord->addTableStyle($fancyTableStyleName, $fancyTableStyle, []);
+        $table = $section->addTable($fancyTableStyleName);
+
+        $table->addRow(200);
+        $table->addCell(2500)->addText('总层数',$fontStyle);
+        $table->addCell(2500)->addText('二层楼',$fontStyle);
+        $table->addCell(2500)->addText('三层楼',$fontStyle);
+        $table->addCell(2500)->addText('四层楼',$fontStyle);
+        $table->addCell(2500)->addText('五层楼',$fontStyle);
+        $table->addCell(2500)->addText('六层楼',$fontStyle);
+        $table->addCell(2500)->addText('七层楼',$fontStyle);
+
+        $table->addRow(200);
+        $table->addCell(2500)->addText('一',$fontStyle);
+        $table->addCell(2500)->addText('100',$fontStyle);
+        $table->addCell(2500)->addText('100',$fontStyle);
+        $table->addCell(2500)->addText('100',$fontStyle);
+        $table->addCell(2500)->addText('100',$fontStyle);
+        $table->addCell(2500)->addText('100',$fontStyle);
+        $table->addCell(2500)->addText('100',$fontStyle);
+
+        $table->addRow(200);
+        $table->addCell(2500)->addText('二',$fontStyle);
+        $table->addCell(2500)->addText('94',$fontStyle);
+        $table->addCell(2500)->addText('96',$fontStyle);
+        $table->addCell(2500)->addText('96',$fontStyle);
+        $table->addCell(2500)->addText('96',$fontStyle);
+        $table->addCell(2500)->addText('96',$fontStyle);
+        $table->addCell(2500)->addText('96',$fontStyle);
+
+        $table->addRow(200);
+        $table->addCell(2500)->addText('三',$fontStyle);
+        $table->addCell(2500)->addText('/',$fontStyle);
+        $table->addCell(2500)->addText('92',$fontStyle);
+        $table->addCell(2500)->addText('94',$fontStyle);
+        $table->addCell(2500)->addText('94',$fontStyle);
+        $table->addCell(2500)->addText('94',$fontStyle);
+        $table->addCell(2500)->addText('94',$fontStyle);
+
+        $table->addRow(200);
+        $table->addCell(2500)->addText('四',$fontStyle);
+        $table->addCell(2500)->addText('/',$fontStyle);
+        $table->addCell(2500)->addText('/',$fontStyle);
+        $table->addCell(2500)->addText('88',$fontStyle);
+        $table->addCell(2500)->addText('92',$fontStyle);
+        $table->addCell(2500)->addText('92',$fontStyle);
+        $table->addCell(2500)->addText('92',$fontStyle);
+
+        $table->addRow(200);
+        $table->addCell(2500)->addText('五',$fontStyle);
+        $table->addCell(2500)->addText('/',$fontStyle);
+        $table->addCell(2500)->addText('/',$fontStyle);
+        $table->addCell(2500)->addText('/',$fontStyle);
+        $table->addCell(2500)->addText('85',$fontStyle);
+        $table->addCell(2500)->addText('88',$fontStyle);
+        $table->addCell(2500)->addText('88',$fontStyle);
+
+        $table->addRow(200);
+        $table->addCell(2500)->addText('六',$fontStyle);
+        $table->addCell(2500)->addText('/',$fontStyle);
+        $table->addCell(2500)->addText('/',$fontStyle);
+        $table->addCell(2500)->addText('/',$fontStyle);
+        $table->addCell(2500)->addText('/',$fontStyle);
+        $table->addCell(2500)->addText('82',$fontStyle);
+        $table->addCell(2500)->addText('85',$fontStyle);
+
+        $table->addRow(200);
+        $table->addCell(2500)->addText('七',$fontStyle);
+        $table->addCell(2500)->addText('/',$fontStyle);
+        $table->addCell(2500)->addText('/',$fontStyle);
+        $table->addCell(2500)->addText('/',$fontStyle);
+        $table->addCell(2500)->addText('/',$fontStyle);
+        $table->addCell(2500)->addText('/',$fontStyle);
+        $table->addCell(2500)->addText('78',$fontStyle);
+
+        $section->addText("    （2）住宅结构因素修正系数表", 'eightF', 'w100');
+        $fancyTableStyleName = 'table6';
+        $fancyTableStyle = array(
+            'borderSize' => 1,
+        );
+
+        $fontStyle = array('bold'=>false, 'align'=>'center', 'size' => 11);//文字样式
+
+        $phpWord->addTableStyle($fancyTableStyleName, $fancyTableStyle, []);
+        $table = $section->addTable($fancyTableStyleName);
+
+        $table->addRow(200);
+        $table->addCell(2500)->addText('结构类型',$fontStyle);
+        $table->addCell(2500)->addText('钢混结构',$fontStyle);
+        $table->addCell(2500)->addText('砖混结构',$fontStyle);
+        $table->addCell(2500)->addText('砖木结构',$fontStyle);
+
+        $table->addRow(200);
+        $table->addCell(2500)->addText('系数取值',$fontStyle);
+        $table->addCell(2500)->addText('100',$fontStyle);
+        $table->addCell(2500)->addText('100',$fontStyle);
+        $table->addCell(2500)->addText('90',$fontStyle);
+
+        $section->addText("    （3）住宅朝向因素修正系数表", 'eightF', 'w100');
+        $fancyTableStyleName = 'table7';
+        $fancyTableStyle = array(
+            'borderSize' => 1,
+        );
+
+        $fontStyle = array('bold'=>false, 'align'=>'center', 'size' => 11);//文字样式
+
+        $phpWord->addTableStyle($fancyTableStyleName, $fancyTableStyle, []);
+        $table = $section->addTable($fancyTableStyleName);
+
+        $table->addRow(200);
+        $table->addCell(2500)->addText('卧室朝向',$fontStyle);
+        $table->addCell(2500)->addText('北',$fontStyle);
+        $table->addCell(2500)->addText('西',$fontStyle);
+        $table->addCell(2500)->addText('东',$fontStyle);
+        $table->addCell(2500)->addText('一间朝南',$fontStyle);
+        $table->addCell(2500)->addText('两间朝南',$fontStyle);
+        $table->addCell(2500)->addText('三间朝南',$fontStyle);
+
+        $table->addRow(200);
+        $table->addCell(2500)->addText('修正系数',$fontStyle);
+        $table->addCell(2500)->addText('86',$fontStyle);
+        $table->addCell(2500)->addText('90',$fontStyle);
+        $table->addCell(2500)->addText('95',$fontStyle);
+        $table->addCell(2500)->addText('98',$fontStyle);
+        $table->addCell(2500)->addText('100',$fontStyle);
+        $table->addCell(2500)->addText('102',$fontStyle);
+
+        $section->addText("    （4）住宅装修情况因素修正系数表", 'eightF', 'w100');
+
+        $fancyTableStyleName = 'table8';
+        $fancyTableStyle = array(
+            'borderSize' => 1,
+        );
+
+        $fontStyle = array('bold'=>false, 'align'=>'center', 'size' => 11);//文字样式
+
+        $phpWord->addTableStyle($fancyTableStyleName, $fancyTableStyle, []);
+        $table = $section->addTable($fancyTableStyleName);
+
+        $table->addRow(200);
+        $table->addCell(2500)->addText('装修等级',$fontStyle);
+        $table->addCell(2500)->addText('毛坯',$fontStyle);
+        $table->addCell(2500)->addText('简单装修',$fontStyle);
+        $table->addCell(2500)->addText('中档装修',$fontStyle);
+        $table->addCell(2500)->addText('高档装修',$fontStyle);
+
+        $table->addRow(200);
+        $table->addCell(2500)->addText('单位面积价格',$fontStyle);
+        $table->addCell(2500)->addText('0',$fontStyle);
+        $table->addCell(2500)->addText('280',$fontStyle);
+        $table->addCell(2500)->addText('580',$fontStyle);
+        $table->addCell(2500)->addText('1150',$fontStyle);
+
+        $textrun = $section->addTextRun();
+        $textrun->addImage(PUB . '/image/s3.png', ["width" => 450, 'height' => 30]);
+
+        $section->addText("    （5）住宅成新因素修正系数表", 'eightF', 'w100');
+        $section->addText("        以估价对象所对应的房屋建成年代为基准（100%），相差每相差一年修正±0.5%。", 'eightF', 'w100');
+        $section->addText("    （6）附属物计价系数", 'eightF', 'w100');
+        $fancyTableStyleName = 'table9';
+        $fancyTableStyle = array(
+            'borderSize' => 1,
+        );
+
+        $fontStyle = array('bold'=>false, 'align'=>'center', 'size' => 11);//文字样式
+
+        $phpWord->addTableStyle($fancyTableStyleName, $fancyTableStyle, []);
+        $table = $section->addTable($fancyTableStyleName);
+
+        $table->addRow(200);
+        $table->addCell(2500)->addText('附属物',$fontStyle);
+        $table->addCell(2500)->addText('车库',$fontStyle);
+        $table->addCell(2500)->addText('阁楼',$fontStyle);
+        $table->addCell(2500)->addText('储藏室',$fontStyle);
+
+        $table->addRow(200);
+        $table->addCell(2500)->addText('系数取值',$fontStyle);
+        $table->addCell(2500)->addText('60',$fontStyle);
+        $table->addCell(2500)->addText('50',$fontStyle);
+        $table->addCell(2500)->addText('35',$fontStyle);
+
+        $section->addText("    （7）区位因素调节系数评分等级说明表", 'eightF', 'w100');
+
+        $textrun = $section->addTextRun();
+        $textrun->addImage(PUB . '/image/table2.png', ["width" => 450, 'height' => 550]);
+        $section->addText("    （8）区位因素修正调节系数评分表", 'eightF', 'w100');
+        $section->addText("七、估价结果确定",  array('name' => '宋体', 'size' => 15, 'bold' => true, 'color' => '1B2232', 'align' => 'center'), 'w100');
+        $section->addText("    将上述四个比准价格的简单算术平均数作为市场比较法的测算结果。 ", 'eightF', 'w100');
+        $section->addText("    标准房基准价格=(2854+2690+2624+2673)/4=2710元/㎡（取整） ", 'eightF', 'w100');
 
 
 
