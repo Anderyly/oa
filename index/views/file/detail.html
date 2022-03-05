@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<title>苏北评估智地规划办公系统</title>
+		<link href="/static/css/bootstrap.min.css?v=3.3.6" rel="stylesheet">
+		<link href="/static/css/font-awesome.min.css?v=4.4.0" rel="stylesheet">
+		<link href="/static/css/animate.css" rel="stylesheet">
+		<!--<link href="/static/layui/css/layui.css" rel="stylesheet">-->
+		<link href="/static/css/plugins/iCheck/custom.css" rel="stylesheet">
+		<link href="/static/css/plugins/chosen/chosen.css" rel="stylesheet">
+		<link href="/static/css/plugins/switchery/switchery.css" rel="stylesheet">
+		<link href="/static/css/style.min.css?v=4.1.0" rel="stylesheet">
+		<link href="/static/elementUI/css/index.min.css" rel="stylesheet">
+		<script src="/static/elementUI/js/vue.min.js"></script>
+		<script src="/static/elementUI/js/index.min.js"></script>
+		<script src="/static/laydate/laydate.js"></script>
+		<link href="/static/select2/css/select2.css" rel="stylesheet" />
+		<link rel="stylesheet" href="/static/layui/css/layui.css">
+		<link href="/static/plugins/bootstrap-tagsinput/dist/bootstrap-tagsinput.css" rel="stylesheet">
+		<style type="text/css">
+			.long-tr th {
+				text-align: center
+			}
+
+			.long-td td {
+				text-align: center
+			}
+
+			/*elementUI分页样式*/
+			.layout-pagination {
+				text-align: right;
+				margin-top: 15px;
+			}
+
+			.control-label {
+				margin-top: 7px;
+				text-align: right;
+			}
+
+			.li {
+				display: inline-block;
+				font-size: 14px;
+				padding: 10px;
+				border: 1px solid #e7eaec;
+			}
+
+			.a {
+				text-decoration: none;
+				-webkit-tap-highlight-color: rgba(255, 255, 255, 0);
+				-webkit-user-select: none;
+				-moz-user-focus: none;
+				-moz-user-select: none;
+				color: black;
+			}
+
+			.a:hover {
+				color: black;
+			}
+
+			.act {
+				border-bottom: 3px solid #0064c8;
+			}
+
+			.xxx {
+				padding-top: 50px
+			}
+
+			.h3downline {
+				border-bottom: 1px solid #eee;
+				padding-bottom: 5px;
+				margin-bottom: 15px;
+				font-weight: bold;
+				color: black;
+			}
+		</style>
+	</head>
+	<body class="gray-bg">
+		<div class="wrapper wrapper-content animated fadeInRight">
+			<div class="row" id="app">
+				<div class="col-sm-12">
+					<div class="ibox float-e-margins">
+						<div class="ibox-title">
+							<ul>
+								<li class="li">
+									<a :href="'verify.html?id=' + project_id">项目信息</a>
+								</li>
+								<li class="li">
+									<a :href="'data.html?id=' + project_id">项目资料</a>
+								</li>
+								<li class="li act">
+									<a :href="'detail.html?id=' + project_id" style="color: #0064c8;">详细信息</a>
+								</li>
+							</ul>
+						</div>
+						<div class="ibox-content row" style="margin-left: 1px;margin-right: 1px;">
+							<div class="row">
+								<!--当项目信息为空时不显示-->
+								<!-- <div class="col-sm-12">
+						            <div class="card-box">
+						                <h3 class="h3downline">报告信息</h3>
+						                <table class="table table-striped table-bordered">
+						                    <tbody><tr>
+						                        <th>报告名称 </th>
+						                        <th>参与人员 </th>
+						                        <th>攥写人 </th>
+						                        <th>上传时间 </th>
+						                        <th>审核意见 </th>
+						                        <th>审核人 </th>
+						                        <th>审核时间 </th>
+						                    </tr>
+						                </tbody></table>
+						            </div>
+						        </div> -->
+								<!---项目报告结束-->
+								<div class="col-sm-12">
+									<div class="card-box">
+										<h3 class="h3downline">工作周志</h3>
+										<table class="table table-striped table-bordered">
+											<tbody>
+											<tr>
+												<th>内容</th>
+												<th>操作人</th>
+												<th>日期</th>
+											</tr>
+											<tr v-for="(item,index) in res.log">
+												<td>{{item.content}}</td>
+												<td>{{item.nickname}}</td>
+												<td>{{item.created_at}}</td>
+											</tr>
+											</tbody>
+										</table>
+									</div>
+								</div>
+								<!---工作计划结束-->
+								<div class="col-sm-12">
+									<div class="card-box">
+										<h3 class="h3downline">工具信息</h3>
+										<table class="table table-striped table-bordered">
+											<tbody>
+												<tr>
+													<th>工具名称</th>
+													<th>使用人</th>
+													<th>借用时间</th>
+													<th>归还时间</th>
+												</tr>
+												<tr v-for="(item,index) in res.tools">
+													<td>{{item.toolName}}</td>
+													<td>{{item.nickname}}</td>
+													<td>{{item.use_at}}</td>
+													<td>{{item.h_at}}</td>
+												</tr>
+											</tbody>
+										</table>
+									</div>
+								</div>
+								<!--工具信息结束-->
+								<div class="col-sm-12">
+									<div class="card-box">
+										<h3 class="h3downline">报销信息</h3>
+										<table class="table table-striped table-bordered">
+											<tbody>
+												<tr>
+													<th>报销内容</th>
+													<th>报销金额</th>
+													<th>报销人</th>
+													<th>时间</th>
+													<th>批准人</th>
+												</tr>
+												<tr v-for="(item,index) in res.reimbursement">
+													<td>{{item.content}}</td>
+													<td>{{item.amount}}</td>
+													<td>{{item.nickname}}</td>
+													<td>{{item.created_at}}</td>
+													<td>{{item.approval_nickname}}</td>
+												</tr>
+												<tr>
+													<td colspan="5" style="text-align:right;font-weight:bold">小计：{{totalSumAll}}</td>
+												</tr>
+											</tbody>
+										</table>
+									</div>
+								</div>
+								<!--报销信息-->
+								<div class="col-sm-6">
+									<div class="card-box">
+										<h3 class="h3downline">本司技术人员工资分配</h3>
+										<table class="table table-striped table-bordered" id="tb1">
+											<tbody>
+												<tr>
+													<th style="width:80px">名称 </th>
+													<th>考勤天数</th>
+													<th>补助费（元/天）</th>
+													<th>绩效工资（元）</th>
+													<th>总绩效（元）</th>
+												</tr>
+												<tr v-for="(item,index) in res.achievements.bgs">
+													<td>{{item.nickname}}</td>
+													<td>{{item.work}}</td>
+													<td>{{item.subsidy}}</td>
+													<td>{{item.wages}}</td>
+													<td>{{item.all_work}}</td>
+												</tr>
+												<tr>
+													<td style="font-weight:bold">小计</td>
+													<td>{{gsWork}}</td>
+													<td>{{gsSubsidy}}</td>
+													<td>{{gsWages}}</td>
+													<td>{{gsAllWork}}</td>
+												</tr>
+											</tbody>
+										</table>
+
+									</div>
+								</div>
+								<!--本司技术人员工资分配-->
+								<div class="col-sm-6">
+									<div class="card-box">
+										<h3 class="h3downline">外聘技术人员工资分配</h3>
+										<table class="table table-striped table-bordered" id="tb1">
+											<tbody>
+												<tr>
+													<th style="width:80px">名称 </th>
+													<th>考勤天数</th>
+													<th>补助费（元/天）</th>
+													<th>绩效工资（元）</th>
+													<th>总绩效（元）</th>
+												</tr>
+												<tr v-for="(item,index) in res.achievements.wb">
+													<td>{{item.uid}}</td>
+													<td>{{item.work}}</td>
+													<td>{{item.subsidy}}</td>
+													<td>{{item.wages}}</td>
+													<td>{{item.all_work}}</td>
+												</tr>
+												<tr>
+													<td style="font-weight:bold">小计</td>
+													<td>{{wbWork}}</td>
+													<td>{{wbSubsidy}}</td>
+													<td>{{wbWages}}</td>
+													<td>{{wbAllWork}}</td>
+												</tr>
+											</tbody>
+										</table>
+
+									</div>
+								</div>
+								<!--外聘技术人员工资分配-->
+
+								<!--合同结束-->
+							</div>
+						</div>
+
+					</div>
+
+
+				</div>
+				<script src="/static/js/jquery.min.js?v=2.1.4"></script>
+				<script src="/static/js/bootstrap.min.js?v=3.3.6"></script>
+				<script src="/static/js/content.min.js?v=1.0.0"></script>
+				<script src="/static/js/plugins/chosen/chosen.jquery.js"></script>
+				<script src="/static/js/plugins/iCheck/icheck.min.js"></script>
+				<!-- <script src="/static/js/plugins/layer/laydate/laydate.js"></script> -->
+				<script src="/static/js/plugins/switchery/switchery.js"></script>
+				<!-- <script src="/static/layui/layui.js"></script> -->
+				<!--IOS开关样式-->
+				<script src="/static/js/jquery.form.js"></script>
+				<script src="/static/js/moment.min.js"></script>
+				<script src="/static/js/layer/layer.js"></script>
+				<script src="/static/js/laypage/laypage.js"></script>
+				<script src="/static/js/laytpl/laytpl.js"></script>
+				<script src="/static/js/lunhui.js"></script>
+				<script src="/js/globe.js"></script>
+				<script src="/static/select2/js/select2.js"></script>
+				<!-- <script type="text/javascript" src="/static/webupload/webuploader.min.js"></script> -->
+				<script src="/static/plugins/bootstrap-tagsinput/dist/bootstrap-tagsinput.min.js"></script>
+
+				<script>
+					$(document).ready(function() {
+						$(".i-checks").iCheck({
+							checkboxClass: "icheckbox_square-green",
+							radioClass: "iradio_square-green",
+						});
+						var myDate = new Date;
+						var year = myDate.getFullYear(); //获取当前年
+						var mon = myDate.getMonth() + 1; //获取当前月
+						var date = myDate.getDate(); //获取当前日
+						var h = myDate.getHours(); //获取当前小时数(0-23)
+						var m = myDate.getMinutes(); //获取当前分钟数(0-59)
+						var s = myDate.getSeconds(); //获取当前秒
+						var value = year + "-" + mon + "-" + date + " " + h + ":" + m + ":" + s;
+						console.log(value)
+						$("#created_at").val(value)
+					});
+				</script>
+
+
+				<script type="text/javascript">
+					// import Modal from './Modal';
+
+					var vm = new Vue({
+						el: '#app',
+						data: {
+							project_id:0,
+							user: {},
+							res: {
+								achievements: {
+									bgs:{},
+									wb:{}
+								},
+								info: {},
+								reimbursement: {},
+								tools: {},
+								log:[]
+							},
+
+						},
+
+						methods: {
+
+						},
+						computed: {
+							totalSumAll() {
+								let totalSumAll = 0;
+								this.res.reimbursement.map((item) => {
+									totalSumAll += parseInt(item.amount)
+								})
+								return totalSumAll
+							},
+							gsWork() {
+								let totalSumAll = 0;
+								this.res.achievements.bgs.map((item) => {
+									totalSumAll += parseInt(item.work)
+								})
+								return totalSumAll
+							},
+							gsSubsidy() {
+								let totalSumAll = 0;
+								this.res.achievements.bgs.map((item) => {
+									totalSumAll += parseInt(item.subsidy)
+								})
+								return totalSumAll
+							},
+							gsWages() {
+								let totalSumAll = 0;
+								this.res.achievements.bgs.map((item) => {
+									totalSumAll += parseInt(item.wages)
+								})
+								return totalSumAll
+							},
+							gsAllWork() {
+								let totalSumAll = 0;
+								this.res.achievements.bgs.map((item) => {
+									totalSumAll += parseInt(item.all_work)
+								})
+								return totalSumAll
+							},
+							wbWork() {
+								let totalSumAll = 0;
+								this.res.achievements.wb.map((item) => {
+									totalSumAll += parseInt(item.work)
+								})
+								return totalSumAll
+							},
+							wbSubsidy() {
+								let totalSumAll = 0;
+								this.res.achievements.wb.map((item) => {
+									totalSumAll += parseInt(item.subsidy)
+								})
+								return totalSumAll
+							},
+							wbWages() {
+								let totalSumAll = 0;
+								this.res.achievements.wb.map((item) => {
+									totalSumAll += parseInt(item.wages)
+								})
+								return totalSumAll
+							},
+							wbAllWork() {
+								let totalSumAll = 0;
+								this.res.achievements.wb.map((item) => {
+									totalSumAll += parseInt(item.all_work)
+								})
+								return totalSumAll
+							},
+						},
+						mounted() {
+							let user = sessionStorage.getItem("user");
+							user = JSON.parse(user);
+							this.user = user;
+							this.res.uid = user.uid;
+
+							this.project_id = getUrlKey("id")
+							let data = httpCurl("project/info", {
+								id: getUrlKey("id")
+							});
+
+							this.res = data.data
+
+
+						}
+					});
+				</script>
+	</body>
+</html>

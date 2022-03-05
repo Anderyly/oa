@@ -1,0 +1,476 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<title>苏北评估智地规划办公系统</title>
+		<link rel="shortcut icon" href="/favicon.ico">
+		<link href="/static/css/bootstrap.min.css?v=3.3.6" rel="stylesheet">
+		<link href="/static/css/font-awesome.min.css?v=4.4.0" rel="stylesheet">
+		<link href="/static/css/animate.css" rel="stylesheet">
+		<link href="/static/css/plugins/iCheck/custom.css" rel="stylesheet">
+		<link href="/static/css/plugins/chosen/chosen.css" rel="stylesheet">
+		<link href="/static/css/plugins/switchery/switchery.css" rel="stylesheet">
+		<link href="/static/css/style.min.css?v=4.1.0" rel="stylesheet">
+		<link href="/static/elementUI/css/index.min.css" rel="stylesheet">
+		<script src="/static/elementUI/js/vue.min.js"></script>
+		<script src="/static/elementUI/js/index.min.js"></script>
+		<style type="text/css">
+			.long-tr th {
+				text-align: center
+			}
+
+			.long-td td {
+				text-align: center
+			}
+
+			/*elementUI分页样式*/
+			.layout-pagination {
+				text-align: right;
+				margin-top: 15px;
+			}
+
+			.control-label {
+				margin-top: 7px;
+				text-align: right;
+			}
+
+			.li {
+				display: inline-block;
+				font-size: 14px;
+				padding: 10px;
+				border: 1px solid #e7eaec;
+			}
+
+			a {
+				text-decoration: none;
+				-webkit-tap-highlight-color: rgba(255, 255, 255, 0);
+				-webkit-user-select: none;
+				-moz-user-focus: none;
+				-moz-user-select: none;
+				color: black;
+			}
+
+			a:hover {
+				color: black;
+			}
+
+			.act {
+				border-bottom: 3px solid #0064c8;
+			}
+		</style>
+	</head>
+	<body class="gray-bg">
+		<div class="wrapper wrapper-content animated fadeInRight">
+			<div class="ibox float-e-margins" id="app" v-cloak>
+				<template>
+					<div class="ibox-title">
+
+						<ul>
+							<li class="li" v-show="auth(79)">
+								<a href="my.html">我的报告</a>
+							</li>
+							<li class="li" v-show="auth(76)">
+								<a href="add.html">发起报告</a>
+							</li>
+							<li class="li" v-show="auth(80)">
+								<a href="list.html">全部报告</a>
+							</li>
+							<li class="li act" v-show="auth(82)">
+								<a href="filiable.html" style="color: #0064c8;">分公司报告</a>
+							</li>
+							<li class="li" v-show="auth(81)">
+								<a href="prediction.html">预评估报告</a>
+							</li>
+						</ul>
+					</div>
+					<div class="ibox-content">
+						<!--工具条-->
+						<el-form :inline="true" class="demo-form-inline">
+							<el-select v-model="report_type" placeholder="类型" style="width: 150px">
+							    <el-option key="" label="全部类型" value=""></el-option>
+							    <el-option v-for="item in reportTypeArr" :key="item.value" :label="item.text" :value="item.id"></el-option>
+							</el-select>
+							<el-select v-model="status" placeholder="状态" style="width: 150px">
+							    <el-option v-for="item in statusArr" :key="item.value" :label="item.label" :value="item.value"></el-option>
+							</el-select>
+							<el-select v-model="charge" placeholder="收费状态" style="width: 150px">
+							    <el-option v-for="item in chargeArr" :key="item.value" :label="item.label" :value="item.value"></el-option>
+							</el-select>
+							<el-form-item>
+							       <el-input style="width:200px" v-model="key" placeholder="报告名称"></el-input>
+								   <el-buton class="btn btn-primary" @click="search"><i class="fa fa-search"></i> 搜索</el-buton>
+							</el-form-item>
+							<el-form-item>
+<!--								   <el-buton class="btn btn-primary" @click="verify()">作报告</el-buton>-->
+<!--								   <el-buton class="btn btn-primary" @click="verify()">审核</el-buton>-->
+<!--								   <el-buton class="btn btn-primary" @click="verify()">盖章</el-buton>-->
+<!--								   <el-buton class="btn btn-primary" @click="verify()">结案</el-buton>-->
+<!--								   <el-buton class="btn btn-primary" @click="verify()">查阅</el-buton>-->
+								   <!-- <el-buton class="btn btn-primary" @click="edit">编辑</el-buton> -->
+								   <a type="button" class="btn btn-danger" @click="del">删除</a>
+							</el-form-item>
+						</el-form>
+
+
+					<div class="example-wrap">
+						<div class="example">
+							<el-table :data="tableData" border highlight-current-row v-loading="listLoading"
+								element-loading-text="拼命加载中..." @selection-change="handleSelectionChange"
+								style="width: 100%" :cell-style="finalCellStyle" @cell-dblclick="clickOpen">
+								<el-table-column type="selection" width="60" align="center"></el-table-column>
+								<!-- <el-table-column prop="id" label="#" width="120" show-overflow-tooltip align="center"> -->
+								</el-table-column>
+
+								<el-table-column prop="report_type_name" label="报告类型" align="center" width="100">
+								</el-table-column>
+
+								<el-table-column prop="name" label="报告名称" align="center">
+								</el-table-column>
+
+								<el-table-column prop="report_text" label="报告编号" align="center" width="">
+								</el-table-column>
+								<el-table-column prop="report_nickname" label="做报告人" align="center" width="90">
+								</el-table-column>
+								<el-table-column prop="nickname" label="发起人" align="center" width="90">
+								</el-table-column>
+								<el-table-column prop="created_at" label="发起日期" align="center" width="160">
+								</el-table-column>
+								<el-table-column prop="evaluation_aim" label="估价目的" align="center">
+								</el-table-column>
+								<el-table-column prop="bank" label="使用银行" align="center">
+								</el-table-column>
+								<el-table-column prop="status" label="状态" align="center" width="90"
+									:formatter="status_type_formatter">
+								</el-table-column>
+								<el-table-column prop="charge" label="收费状态" align="center" width="90"
+									:formatter="charge_formatter">
+								</el-table-column>
+								<!-- <el-table-column align="center" width="120" label="操作">
+									<template scope="scope">
+										<a href="edit.html">
+											<el-button size="small" type="text">编辑
+										</a>
+										</el-button>
+										<el-button size="small" type="text" @click="del(scope.row.id)">删除
+										</el-button>
+									</template>
+								</el-table-column> -->
+							</el-table>
+							<div class="layout-pagination">
+								<el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange"
+									:current-page="currentPage" :page-sizes="[10, 20, 50, 100]" :page-size="pageSize"
+									layout="total, sizes, prev, pager, next, jumper" :total="totalCount">
+								</el-pagination>
+							</div>
+						</div>
+					</div>
+				</template>
+			</div>
+		</div>
+		</div>
+		<script src="/static/js/jquery.min.js?v=2.1.4"></script>
+		<script src="/static/js/bootstrap.min.js?v=3.3.6"></script>
+		<script src="/static/js/content.min.js?v=1.0.0"></script>
+		<script src="/static/js/plugins/chosen/chosen.jquery.js"></script>
+		<script src="/static/js/plugins/iCheck/icheck.min.js"></script>
+		<script src="/static/js/plugins/layer/laydate/laydate.js"></script>
+		<script src="/static/js/plugins/switchery/switchery.js"></script>
+		<!--IOS开关样式-->
+		<script src="/static/js/jquery.form.js"></script>
+		<script src="/static/js/moment.min.js"></script>
+		<script src="/static/js/layer/layer.js"></script>
+		<script src="/static/js/laypage/laypage.js"></script>
+		<script src="/static/js/laytpl/laytpl.js"></script>
+		<script src="/static/js/lunhui.js"></script>
+		<script src="/js/globe.js"></script>
+		<script>
+			$(document).ready(function() {
+				$(".i-checks").iCheck({
+					checkboxClass: "icheckbox_square-green",
+					radioClass: "iradio_square-green",
+				})
+			});
+		</script>
+
+		<script type="text/javascript">
+			var vm = new Vue({
+				el: '#app',
+				data: {
+					imgPath: '/uploads/face/',
+					//表格当前页数据
+					tableData: [],
+					//多选数组
+					multipleSelection: [],
+					//搜索条件
+					key: '',
+					//默认每页数据量
+					pageSize: 10,
+					//当前页码
+					currentPage: 1,
+					//默认数据总数
+					totalCount: 0,
+					//列表加载遮罩
+					listLoading: false,
+					chargeArr: [
+						{value: "", label: "全部收费"},
+						{value: 1, label: "已收费"},
+						{value: 0, label: "未收费"},
+					],
+					charge: "",
+					statusArr: [
+						{value: "", label: "全部状态"},
+						{value: 2, label: "待审核"},
+						{value: 3, label: "待盖章"},
+						{value: 4, label: "待结案"},
+					],
+					status: "",
+					reportTypeArr:[],
+					report_type:"",
+					
+					// 2待审核 3待盖章 4待结案
+					//时间格式化
+					dateFormat: function(row, column) {
+						var date = row[column.property];
+						if (date == undefined) {
+							return "";
+						}
+						return moment(date * 1000).format("YYYY-MM-DD HH:mm:ss");
+					},
+
+					ty: function(row, column) {
+						var ss
+						if (row.root == 1) {
+							return "是";
+						} else {
+							return "否";
+						}
+					}
+				},
+				methods: {
+					clickOpen(row) {
+						parent.winui.window.open({
+							id: "report_filiable" + row.id,
+							type: 2,
+							title: "分公司报告 - " + row.report_text,
+							content: "views/report/verify.html?id=" + row.id
+						});
+					},
+					verify() {
+						if (this.multipleSelection.length != 1) {
+							vm.openMessage('warning', '请选择一条数据进行审核！');
+							return;
+						}
+						let id = 0;
+						this.multipleSelection.forEach((row) => {
+							id = row.id
+						})
+						window.location.href = "verify.html?id=" + id
+						
+					},
+					status_type_formatter: function(row, column) {
+						var val = row.status;
+						// 状态 1作报告 2待审核 3带盖章 4待结案 5已结案
+						if (val == 1) {
+							return "作报告"
+						} else if (val == 2) {
+							return "待审核"
+						} else if (val == 3) {
+							return "待盖章"
+						} else if (val == 4) {
+							return "待结案"
+						} else if (val == 5) {
+							return "已结案"
+						}
+					},
+					charge_formatter: function(row, column) {
+						var val = row.charge;
+						// 状态 1作报告 2待审核 3带盖章 4待结案 5已结案
+						if (val == 1) {
+							return "已收费"
+						} else {
+							return "未收费"
+						}
+					},
+					finalCellStyle(row, column, rowIndex, columnIndex) {
+						console.log(123)
+						console.log(row.column)
+						if (row.column.label === '状态' && row.row.status == 1) {
+							return 'color:red'
+						} else if (row.column.label === '状态' && row.row.status == 2) {
+							return 'color:blue'
+						} else if (row.column.label === '状态' && row.row.status == 3) {
+							return 'color:yellow'
+						}
+					},
+					//从服务器读取数据
+					loadData(key, currentPage, pageSize) {
+						vm.listLoading = true;
+						let user = JSON.parse(sessionStorage.getItem("user"));
+
+						let data = httpCurl("report/branchList", {
+							key: key,
+							page: currentPage,
+							rows: pageSize,
+							status: this.status,
+							report_type: this.report_type,
+							charge: this.charge
+						});
+						vm.tableData = [];
+						vm.totalCount = data.count;
+						for (var i = 0; i < data.data.info.length; i++) {
+							if (data.data.info[i]) {
+								vm.tableData.push(data.data.info[i]);
+							}
+						}
+						vm.listLoading = false;
+					},
+					dateFormat: function(row, column) {
+						var date = row[column.property];
+						if (date == undefined) {
+							return "";
+						}
+						return moment(date * 1000).format("YYYY-MM-DD HH:mm:ss");
+					},
+					dateVFormat: function(row, column) {
+						var date = row[column.property];
+						if (date == undefined) {
+							return "";
+						}
+						return moment(date * 1000).format("YYYY-MM-DD");
+					},
+					statusFormat: function(row, column) {
+						var val = row.status;
+						if (val == 1) {
+							return "待批准"
+						} else if (val == 2) {
+							return "批准"
+						} else if (val == 3) {
+							return "拒绝"
+						}
+					},
+					sex(row, column) {
+						if (row.gender == 1) {
+							return "男";
+						} else if (row.gender == 2) {
+							return "女";
+						} else {
+							return "未知";
+						}
+					},
+					openMessage(type, message) {
+						this.$message({
+							type: type,
+							duration: 1500,
+							message: message
+						});
+					},
+
+					//每页显示数据量变更
+					handleSizeChange(val) {
+						this.pageSize = val;
+						this.loadData(this.key, this.currentPage, this.pageSize);
+					},
+					//页码变更
+					handleCurrentChange(val) {
+						this.currentPage = val;
+						this.loadData(this.key, this.currentPage, this.pageSize);
+					},
+					//多选响应
+					handleSelectionChange(val) {
+						this.multipleSelection = val;
+					},
+					//搜索
+					search() {
+						this.loadData(this.key, this.currentPage, this.pageSize);
+						vm.listLoading = false;
+					},
+					//添加
+					add() {
+						openAdd();
+					},
+					//编辑
+					edit(id) {
+						// openEdit(id);
+						window.location.href = "wait.html?id=" + id
+					},
+					//查看
+					detail(id) {
+						openDetail(id);
+					},
+					//批量删除
+					del(id) {
+						if (isNaN(id)) {
+							if (this.multipleSelection.length == 0) {
+								vm.openMessage('warning', '请选择至少一条数据进行删除！');
+								return;
+							}
+							var array = [];
+							this.multipleSelection.forEach((row) => {
+								array.push(row.id);
+							})
+							array = array.toString();
+						} else {
+							array = id;
+						}
+
+
+
+						this.$confirm('此操作将永久删除该数据, 是否继续?', '提示', {
+							confirmButtonText: '确定',
+							cancelButtonText: '取消',
+							type: 'warning'
+						}).then(() => {
+							let res = httpCurl("report/del", {
+								id: array
+							})
+							if (res.code == 200) {
+								vm.openMessage('success', res.msg);
+								vm.loadData(vm.key, vm.currentPage, vm.pageSize);
+							} else {
+								vm.openMessage('error', res.msg);
+							}
+						}).catch(() => {
+							vm.openMessage('info', '已取消删除');
+						});
+					}
+				},
+				mounted() {
+					let data = httpCurl("ReportType/getAll",{})
+					this.reportTypeArr = data.data.info
+				}
+			})
+
+			//载入数据
+			vm.loadData(vm.key, vm.currentPage, vm.pageSize);
+
+
+			function openAdd() {
+				layer.open({
+					type: 2,
+					title: '添加',
+					shadeClose: false,
+					scrollbar: false,
+					maxmin: true,
+					shade: 0.2,
+					area: ['45%', '85%'],
+					content: 'add.html',
+				});
+			}
+
+			function openEdit(id) {
+				layer.open({
+					type: 2,
+					title: '编辑信息',
+					shadeClose: false,
+					scrollbar: false,
+					maxmin: true,
+					shade: 0.2,
+					area: ['45%', '85%'],
+					content: 'wait.html?id=' + id,
+				});
+			}
+		</script>
+	</body>
+</html>
+

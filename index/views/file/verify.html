@@ -1,0 +1,491 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<title>苏北评估智地规划办公系统</title>
+		<link href="/static/css/bootstrap.min.css?v=3.3.6" rel="stylesheet">
+		<link href="/static/css/font-awesome.min.css?v=4.4.0" rel="stylesheet">
+		<link href="/static/css/animate.css" rel="stylesheet">
+		<!--<link href="/static/layui/css/layui.css" rel="stylesheet">-->
+		<link href="/static/css/plugins/iCheck/custom.css" rel="stylesheet">
+		<link href="/static/css/plugins/chosen/chosen.css" rel="stylesheet">
+		<link href="/static/css/plugins/switchery/switchery.css" rel="stylesheet">
+		<link href="/static/css/style.min.css?v=4.1.0" rel="stylesheet">
+		<link href="/static/elementUI/css/index.min.css" rel="stylesheet">
+		<script src="/static/elementUI/js/vue.min.js"></script>
+		<script src="/static/elementUI/js/index.min.js"></script>
+		<script src="/static/laydate/laydate.js"></script>
+		<link href="/static/select2/css/select2.css" rel="stylesheet" />
+		<link rel="stylesheet" href="/static/layui/css/layui.css">
+		<link href="/static/plugins/bootstrap-tagsinput/dist/bootstrap-tagsinput.css" rel="stylesheet">
+		<link rel="stylesheet" href="/static/inputTag/inputTag.css">
+		<style type="text/css">
+			.long-tr th {
+				text-align: center
+			}
+
+			.long-td td {
+				text-align: center
+			}
+
+			/*elementUI分页样式*/
+			.layout-pagination {
+				text-align: right;
+				margin-top: 15px;
+			}
+
+			.control-label {
+				margin-top: 7px;
+				text-align: right;
+			}
+
+			.li {
+				display: inline-block;
+				font-size: 14px;
+				padding: 10px;
+				border: 1px solid #e7eaec;
+			}
+
+			.a {
+				text-decoration: none;
+				-webkit-tap-highlight-color: rgba(255, 255, 255, 0);
+				-webkit-user-select: none;
+				-moz-user-focus: none;
+				-moz-user-select: none;
+				color: black;
+			}
+
+			.a:hover {
+				color: black;
+			}
+
+			.act {
+				border-bottom: 3px solid #0064c8;
+			}
+
+			.xxx {
+				padding-top: 50px
+			}
+
+			.h3downline {
+				border-bottom: 1px solid #eee;
+				padding-bottom: 5px;
+				margin-bottom: 15px;
+				font-weight: bold;
+				color: black;
+			}
+		</style>
+	</head>
+	<body class="gray-bg">
+		<div class="wrapper wrapper-content animated fadeInRight">
+			<div class="row" id="app">
+				<div class="col-sm-12">
+					<div class="ibox float-e-margins">
+						<div class="ibox-title">
+							<ul>
+								<li class="li act">
+									<a :href="'verify.html?id=' + project_id" style="color: #0064c8;">项目信息</a>
+								</li>
+								<li class="li">
+									<a :href="'log.html?id=' + project_id">工作周志</a>
+								</li>
+								<li class="li">
+									<a :href="'data.html?id=' + project_id">项目资料</a>
+								</li>
+								<li class="li">
+									<a :href="'detail.html?id=' + project_id">详细信息</a>
+								</li>
+							</ul>
+						</div>
+						<div class="ibox-content row" style="margin-left: 1px;margin-right: 1px;">
+							<div class="col-sm-4">
+								<h3 class="h3downline">项目发起内容</h3>
+								<table class="table table-striped table-bordered">
+									<tbody>
+										<tr>
+											<td style="width:100px">项目类型 </td>
+											<td>{{res.content.project_type_name || ""}}</td>
+										</tr>
+										<tr>
+											<td>项目名称 </td>
+											<td>{{res.content.name}}</td>
+										</tr>
+										<tr>
+											<td>委托方 </td>
+											<td>{{res.content.client}}</td>
+										</tr>
+										<tr>
+											<td>联系人 </td>
+											<td>{{res.content.contacts}}</td>
+										</tr>
+										<tr>
+											<td>联系电话 </td>
+											<td>{{res.content.phone}}</td>
+										</tr>
+										<tr>
+											<td>项目经理 </td>
+											<td>{{res.content.manager_nickname}}</td>
+										</tr>
+										<tr>
+											<td>发起人 </td>
+											<td>{{res.content.nickname}}</td>
+										</tr>
+										<tr>
+											<td>创建时间 </td>
+											<td>{{res.content.created_at}}</td>
+										</tr>
+
+
+									</tbody>
+								</table>
+							</div>
+
+							<div class="col-sm-8">
+								<h3 class="h3downline">项目信息</h3>
+								<div>
+
+									<div class="form-group">
+										<label class="">项目性质</label>
+										<select class="form-control" v-model="res.info.nature">
+											<option value="1">年度</option>
+											<option value="2">独立</option>
+										</select>
+									</div>
+
+									<div class="form-group">
+										<label class="">项目概况</label>
+										<textarea class="form-control" v-model="res.info.basis" rows="5"></textarea>
+									</div>
+
+									<div class="form-group">
+										<label class="">项目依据</label>
+										<textarea class="form-control" v-model="res.info.survey" rows="5"></textarea>
+									</div>
+
+									<div class="form-group">
+										<label class=" control-label">项目参与人员：</label>
+										<div class="">
+											<div id="partake_uid" class="demo-transfer"></div>
+										</div>
+									</div>
+
+									<div class="form-group">
+										<label class="">项目文字负责人：</label>
+										<div class="">
+											<select id="word_uid" name="word_uid"
+												class="form-control selectpicker show-tick form-control select2 select2-drop-mas"
+												title="请选择">
+												<option></option>
+											</select>
+										</div>
+									</div>
+
+									<div class="form-group">
+										<label class="">辅助参与人员：</label>
+										<div class="fairy-tag-container">
+											<input class="form-control fairy-tag-input tag1" autocomplete="off">
+										</div>
+									</div>
+
+									<div class="form-group">
+										<label class="">数据库图件负责人：</label>
+										<div class="">
+											<select id="file_uid" name="file_uid"
+												class="form-control selectpicker show-tick form-control select2 select2-drop-mas"
+												title="请选择">
+												<option></option>
+											</select>
+										</div>
+									</div>
+
+
+									<div class="form-group">
+										<label class="">合作方：</label>
+										<input class="form-control" v-model="res.info.partner">
+									</div>
+
+									<div class="form-group">
+										<label class="">项目终止时间：</label>
+										<input class="form-control laydate" v-model="res.info.end_at" id="end_at"
+											:value="res.info.end_at">
+									</div>
+
+									<div class="form-group">
+										<label class="">作报告人：</label>
+										<input class="form-control" v-model="res.info.nickname || user.nickname"
+											disabled="disabled">
+									</div>
+									<div class="form-group">
+										<label class="">创建时间：</label>
+										<input type="text" id="created_at" name="created_at" class="form-control"
+											disabled="disabled" value="">
+									</div>
+
+									<input type="submit" class="btn btn-warning" value="确定保存" @click="submit()" disabled="disabled">
+
+								</div>
+							</div>
+
+						</div>
+					</div>
+
+
+				</div>
+				<script src="/static/js/jquery.min.js?v=2.1.4"></script>
+				<script src="/static/js/bootstrap.min.js?v=3.3.6"></script>
+				<script src="/static/js/content.min.js?v=1.0.0"></script>
+				<script src="/static/js/plugins/chosen/chosen.jquery.js"></script>
+				<script src="/static/js/plugins/iCheck/icheck.min.js"></script>
+				<!-- <script src="/static/js/plugins/layer/laydate/laydate.js"></script> -->
+				<script src="/static/js/plugins/switchery/switchery.js"></script>
+				<script src="/static/layui/layui.js"></script>
+				<!--IOS开关样式-->
+				<script src="/static/js/jquery.form.js"></script>
+				<script src="/static/js/moment.min.js"></script>
+				<!-- <script src="/static/js/layer/layer.js"></script> -->
+				<script src="/static/js/laypage/laypage.js"></script>
+				<script src="/static/js/laytpl/laytpl.js"></script>
+				<script src="/static/js/lunhui.js"></script>
+				<script src="/js/globe.js"></script>
+				<script src="/static/select2/js/select2.js"></script>
+				<!-- <script type="text/javascript" src="/static/webupload/webuploader.min.js"></script> -->
+				<script src="/static/inputTag/inputTag.js"></script>
+
+				<script>
+					$(document).ready(function() {
+						$(".i-checks").iCheck({
+							checkboxClass: "icheckbox_square-green",
+							radioClass: "iradio_square-green",
+						});
+						var myDate = new Date;
+						var year = myDate.getFullYear(); //获取当前年
+						var mon = myDate.getMonth() + 1; //获取当前月
+						var date = myDate.getDate(); //获取当前日
+						var h = myDate.getHours(); //获取当前小时数(0-23)
+						var m = myDate.getMinutes(); //获取当前分钟数(0-59)
+						var s = myDate.getSeconds(); //获取当前秒
+						var value = year + "-" + mon + "-" + date + " " + h + ":" + m + ":" + s;
+						console.log(value)
+						$("#created_at").val(value)
+					});
+				</script>
+
+
+				<script type="text/javascript">
+					// import Modal from './Modal';
+
+					var vm = new Vue({
+						el: '#app',
+						data: {
+							project_id:0,
+							user: {},
+							res: {
+								content: {},
+								info: {},
+								
+							},
+							tag:[]
+						},
+
+						methods: {
+							submit() {
+								let aux = this.res.tag.toString();
+								let postData = {
+									project_id: this.res.content.project_id,
+									word_uid: $("#word_uid option:checked").val(),
+									file_uid: $("#file_uid option:checked").val(),
+									nature: this.res.info.nature,
+									survey: this.res.info.survey,
+									basis: this.res.info.basis,
+									partake_uid: this.res.info.partake_uid,
+									auxiliary: aux,
+									partner: this.res.info.partner,
+									end_at: this.res.info.end_at,
+
+								}
+
+								let data = httpCurl("project/editInfo", postData)
+								if (data.code == 200) {
+									layer.msg(data.msg, {
+										icon: 6,
+										time: 2000
+									}, function() {
+										location.reload()
+									});
+								} else {
+									layer.msg(data.msg, {
+										icon: 5,
+										time: 2000
+									});
+								}
+							},
+							verify(status) {
+								let postData = {
+									id: this.res.id,
+									status: status,
+									content: this.verify_content,
+									report_amount: this.report_amount,
+									report_final_amount: this.report_final_amount,
+									report_quality: this.report_quality
+								}
+
+								let data = httpCurl("report/verify", postData)
+								if (data.code == 200) {
+									layer.msg(data.msg, {
+										icon: 6,
+										time: 2000
+									}, function() {
+										location.reload()
+									});
+								} else {
+									layer.msg(data.msg, {
+										icon: 5,
+										time: 2000
+									});
+								}
+							},
+							close() {
+								let postData = {
+									id: this.res.id,
+								}
+								let data = httpCurl("report/close", postData)
+								if (data.code == 200) {
+									layer.msg(data.msg, {
+										icon: 6,
+										time: 2000
+									}, function() {
+										location.reload()
+									});
+								} else {
+									layer.msg(data.msg, {
+										icon: 5,
+										time: 2000
+									});
+								}
+							},
+
+						},
+						mounted() {
+							let user = sessionStorage.getItem("user");
+							user = JSON.parse(user);
+							this.user = user;
+							this.res.uid = user.uid;
+
+							this.project_id = getUrlKey("id")
+							let data1 = httpCurl("project/detail", {
+								project_id: getUrlKey("id")
+							});
+
+							this.res = data1.data
+
+
+						}
+					});
+
+					laydate.render({
+						elem: '#end_at',
+						type: 'datetime',
+						format: 'yyyy-MM-dd HH:mm:ss',
+						done: function(value, date) {
+							vm.$data.res.info.end_at = value
+						}
+					});
+
+					let data = httpCurl("user/getAll", {})
+					$("#word_uid").select2({
+						data: data.data.info,
+						minimumInputLength: 0,
+						placeholder: "可以模糊搜索", //默认值
+						allowClear: true,
+					});
+					$('#word_uid').val([vm.$data.res.info.word_uid]).trigger('change');
+
+					$("#file_uid").select2({
+						data: data.data.info,
+						minimumInputLength: 0,
+						placeholder: "可以模糊搜索", //默认值
+						allowClear: true,
+					});
+					$('#file_uid').val([vm.$data.res.info.file_uid]).trigger('change');
+
+
+
+					let partake_uid = vm.$data.res.info.partake_uid
+					if (partake_uid == undefined) {
+						partake_uid = ""
+					}
+
+
+					layui.use(['transfer', 'layer', 'util'], function() {
+						var $ = layui.$,
+							transfer = layui.transfer,
+							layer = layui.layer,
+							util = layui.util;
+
+						console.log(partake_uid);
+						let data = httpCurl("FinanceWages/getAllUser", {})
+						//模拟数据
+						var data1 = data.data.info
+						//基础效果
+						transfer.render({
+							elem: '#partake_uid',
+							data: data1,
+							title: [
+								[],
+								[]
+							],
+							value: partake_uid.split(","),
+							width: 200,
+							height: 300,
+							showSearch: true,
+							onchange: function(data, index) {
+								console.log(index)
+								console.log(data)
+								if (index == 0) {
+									var ttt = "";
+									for (var i = 0; i <= data.length - 1; i++) {
+										ttt += data[i]["value"] + ","
+									}
+
+									ttt = ttt.slice(0, ttt.length - 1)
+								} else {
+									var arr = vm.$data.res.partake_uid.split(",");
+									var ttt = "";
+									for (var i = 0; i <= data.length - 1; i++) {
+										ttt += data[i]["value"] + ","
+										var local = $.inArray(data[i]["value"], arr); //根据元素值查找下标，不存在返回-1
+										arr.splice(local, 1);
+									}
+
+									ttt = arr.toString();
+								}
+
+
+								vm.$data.res.info.partake_uid = ttt;
+							}
+						})
+
+					});
+					layui.config({
+					    base: './'
+					}).use(['inputTag', 'jquery'], function () {
+					    var $ = layui.jquery, inputTag = layui.inputTag;
+						let init = vm.$data.res.info.auxiliary;
+						let arr = [];
+						if (init != undefined) {
+							arr = init.split(",");
+						}
+						
+					    inputTag.render({
+					        elem: '.tag1',
+					        data: arr,
+					        permanentData: [],
+					        onChange: function (value) {
+					            vm.$data.tag = value;
+					        }
+					    });
+					})
+				</script>
+	</body>
+</html>

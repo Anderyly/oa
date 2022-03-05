@@ -1,0 +1,469 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<title>苏北评估智地规划办公系统</title>
+		<link href="/static/css/bootstrap.min.css?v=3.3.6" rel="stylesheet">
+		<link href="/static/css/font-awesome.min.css?v=4.4.0" rel="stylesheet">
+		<link href="/static/css/animate.css" rel="stylesheet">
+		<!--<link href="/static/layui/css/layui.css" rel="stylesheet">-->
+		<link href="/static/css/plugins/iCheck/custom.css" rel="stylesheet">
+		<link href="/static/css/plugins/chosen/chosen.css" rel="stylesheet">
+		<link href="/static/css/plugins/switchery/switchery.css" rel="stylesheet">
+		<link href="/static/css/style.min.css?v=4.1.0" rel="stylesheet">
+		<link href="/static/elementUI/css/index.min.css" rel="stylesheet">
+		<script src="/static/elementUI/js/vue.min.js"></script>
+		<script src="/static/elementUI/js/index.min.js"></script>
+		<script src="/static/laydate/laydate.js"></script>
+		<link rel="stylesheet" href="/static/layui/css/layui.css">
+		<style type="text/css">
+			.long-tr th {
+				text-align: center
+			}
+
+			.long-td td {
+				text-align: center
+			}
+
+			/*elementUI分页样式*/
+			.layout-pagination {
+				text-align: right;
+				margin-top: 15px;
+			}
+
+			.control-label {
+				margin-top: 7px;
+				text-align: right;
+			}
+
+			.li {
+				display: inline-block;
+				font-size: 14px;
+				padding: 10px;
+				border: 1px solid #e7eaec;
+			}
+
+			a {
+				text-decoration: none;
+				-webkit-tap-highlight-color: rgba(255, 255, 255, 0);
+				-webkit-user-select: none;
+				-moz-user-focus: none;
+				-moz-user-select: none;
+				color: black;
+			}
+
+			a:hover {
+				color: black;
+			}
+
+			.act {
+				border-bottom: 3px solid #0064c8;
+			}
+
+			.xxx {
+				padding-top: 50px
+			}
+
+			.h3downline {
+				border-bottom: 1px solid #eee;
+				padding-bottom: 5px;
+				margin-bottom: 15px;
+				font-weight: bold;
+				color: black;
+			}
+		</style>
+	</head>
+	<body class="gray-bg">
+		<div class="wrapper wrapper-content animated fadeInRight">
+			<div class="row">
+				<div class="col-sm-12">
+					<div class="ibox float-e-margins" id="app">
+						<div class="ibox-title">
+
+							<ul>
+								<li class="li">
+									<a href="my.html">个人绩效</a>
+								</li>
+								<li class="li">
+									<a href="project.html">项目收费</a>
+								</li>
+
+								<li class="li">
+									<a href="report.html">报告收费</a>
+								</li>
+								<li class="li cat">
+									<a href="salary.html" style="color: #0064c8;">工资汇总表</a>
+								</li>
+							</ul>
+						</div>
+						<div class="ibox-content row" style="margin-left: 1px;margin-right: 1px;">
+							<div class="col-sm-9">
+								<h3 class="h3downline">工资查询</h3>
+								<div>
+									<div class="form-group">
+										<label>选择年</label>
+										<select id="type" name="type" class="form-control" required="required"
+											v-model="year" required="required">
+											<option value="2019">2019</option>
+											<option value="2020">2020</option>
+											<option value="2021">2021</option>
+											<option value="2022">2022</option>
+										</select>
+									</div>
+									<div class="form-group">
+										<label>选择月份</label>
+										<select id="type" name="type" class="form-control" required="required"
+											v-model="month" required="required">
+											<option value="01">1</option>
+											<option value="02">2</option>
+											<option value="03">3</option>
+											<option value="04">4</option>
+											<option value="05">5</option>
+											<option value="06">6</option>
+											<option value="07">7</option>
+											<option value="08">8</option>
+											<option value="09">9</option>
+											<option value="10">10</option>
+											<option value="11">11</option>
+											<option value="12">12</option>
+										</select>
+									</div>
+
+									<div class="form-group">
+										<label class=" control-label">选择员工：</label>
+										<div class="">
+											<div id="test1" class="demo-transfer"></div>
+										</div>
+									</div>
+
+
+									<div class="form-group">
+										<div class="">
+											<button id="btnSubmit" class="btn btn-primary" @click="submit">
+												开始筛选</button>
+											<button id="dc" class="btn btn-primary" @click="dc"> 导出</button>
+										</div>
+									</div>
+								</div>
+							</div>
+
+							<div class="col-sm-3">
+								<h3 class="h3downline">录入工资</h3>
+								<div>
+									<div class="form-group">
+										<label>选择年</label>
+										<select id="type" name="type" class="form-control" required="required"
+											v-model="year1" required="required">
+											<option value="2019">2019</option>
+											<option value="2020">2020</option>
+											<option value="2021">2021</option>
+											<option value="2022">2022</option>
+										</select>
+									</div>
+									<div class="form-group">
+										<label>选择月份</label>
+										<select id="type" name="type" class="form-control" required="required"
+											v-model="month1" required="required">
+											<option value="01">1</option>
+											<option value="02">2</option>
+											<option value="03">3</option>
+											<option value="04">4</option>
+											<option value="05">5</option>
+											<option value="06">6</option>
+											<option value="07">7</option>
+											<option value="08">8</option>
+											<option value="09">9</option>
+											<option value="10">10</option>
+											<option value="11">11</option>
+											<option value="12">12</option>
+										</select>
+									</div>
+
+
+									<div class="form-group">
+										<div class="">
+											<button id="btnSubmit" class="btn btn-primary" @click="submit">
+												开始录入</button>
+										</div>
+									</div>
+								</div>
+							</div>
+
+						</div>
+						<div class="ibox-content row" style="margin-left: 1px;margin-right: 1px;">
+							<div class="col-sm-12">
+								<el-table :data="tableData" border highlight-current-row v-loading="listLoading"
+									element-loading-text="拼命加载中..." style="font-size:12px">
+
+
+									<el-table-column prop="nickname" label="姓名" align="center"
+										show-overflow-tooltip width="100">
+									</el-table-column>
+									<el-table-column prop="basic" label="基本工资" align="center"
+										show-overflow-tooltip width="100">
+									</el-table-column>
+									<el-table-column prop="station" label="岗位工资" align="center"
+										show-overflow-tooltip width="100">
+									</el-table-column>
+
+
+									<el-table-column label="绩效工资" align="center">
+
+										<el-table-column prop="toeic" label="托业" align="center" show-overflow-tooltip
+											width="100">
+										</el-table-column>
+										<el-table-column prop="subsidy" label="外业补助" align="center"
+											show-overflow-tooltip width="100">
+										</el-table-column>
+										<el-table-column prop="achievements" label="项目绩效" align="center"
+											show-overflow-tooltip width="100">
+										</el-table-column>
+										<el-table-column prop="report" label="报告费" align="center"
+											show-overflow-tooltip width="100">
+										</el-table-column>
+									</el-table-column>
+
+									<el-table-column label="各项补助" align="center">
+
+										<el-table-column prop="meals" label="餐费" align="center" show-overflow-tooltip
+											width="100">
+										</el-table-column>
+										<el-table-column prop="communication" label="通讯费" align="center"
+											show-overflow-tooltip width="100">
+										</el-table-column>
+										<el-table-column prop="labar" label="劳保" align="center"
+											show-overflow-tooltip width="100">
+										</el-table-column>
+										<el-table-column prop="cooling" label="降温费" align="center"
+											show-overflow-tooltip width="100">
+										</el-table-column>
+									</el-table-column>
+
+									<el-table-column label="养老保险" align="center">
+
+										<el-table-column prop="enterprise_aged" label="企业缴纳" align="center" show-overflow-tooltip
+											width="100">
+										</el-table-column>
+										<el-table-column prop="personal_aged" label="个人缴纳" align="center"
+											show-overflow-tooltip width="100">
+										</el-table-column>
+									</el-table-column>
+
+									<el-table-column label="住房公积金" align="center">
+
+										<el-table-column prop="enterprise_housing" label="企业缴纳" align="center" show-overflow-tooltip
+											width="100">
+										</el-table-column>
+										<el-table-column prop="personal_housing" label="个人缴纳" align="center"
+											show-overflow-tooltip width="100">
+										</el-table-column>
+									</el-table-column>
+
+									<el-table-column label="合计" align="center">
+
+										<el-table-column prop="total" label="工资合计" align="center" show-overflow-tooltip
+											width="100">
+										</el-table-column>
+										<el-table-column prop="real_hair" label="实发合计" align="center"
+											show-overflow-tooltip width="100">
+										</el-table-column>
+
+									</el-table-column>
+
+								</el-table>
+							</div>
+
+						</div>
+					</div>
+				</div>
+
+			</div>
+		</div>
+
+		<script src="/static/js/jquery.min.js?v=2.1.4"></script>
+		<script src="/static/js/bootstrap.min.js?v=3.3.6"></script>
+		<script src="/static/js/content.min.js?v=1.0.0"></script>
+		<script src="/static/js/plugins/chosen/chosen.jquery.js"></script>
+		<script src="/static/js/plugins/iCheck/icheck.min.js"></script>
+		<!-- <script src="/static/js/plugins/layer/laydate/laydate.js"></script> -->
+		<script src="/static/js/plugins/switchery/switchery.js"></script>
+		<script src="/static/layui/layui.js"></script>
+		<!--IOS开关样式-->
+		<script src="/static/js/jquery.form.js"></script>
+		<script src="/static/js/moment.min.js"></script>
+		<script src="/static/js/layer/layer.js"></script>
+		<script src="/static/js/laypage/laypage.js"></script>
+		<script src="/static/js/laytpl/laytpl.js"></script>
+		<script src="/static/js/lunhui.js"></script>
+		<script src="/js/globe.js"></script>
+
+
+
+		<script>
+			$(document).ready(function() {
+				$(".i-checks").iCheck({
+					checkboxClass: "icheckbox_square-green",
+					radioClass: "iradio_square-green",
+				});
+				var myDate = new Date;
+				var year = myDate.getFullYear(); //获取当前年
+				var mon = myDate.getMonth() + 1; //获取当前月
+				var date = myDate.getDate(); //获取当前日
+				var h = myDate.getHours(); //获取当前小时数(0-23)
+				var m = myDate.getMinutes(); //获取当前分钟数(0-59)
+				var s = myDate.getSeconds(); //获取当前秒
+				var value = year + "-" + mon + "-" + date + " " + h + ":" + m + ":" + s;
+				console.log(value)
+				$("#created_at").val(value)
+			});
+		</script>
+
+
+		<script type="text/javascript">
+			var vm = new Vue({
+				el: '#app',
+				data: {
+					//表格当前页数据
+					tableData: [],
+					listLoading: false,
+					user: "",
+					year: "",
+					month: "",
+					year1: "",
+					month1: "",
+					uid: "",
+					show: false,
+					detail: {}
+				},
+				methods: {
+					//从服务器读取数据
+					loadData(data) {
+						vm.listLoading = true;
+						vm.tableData = [];
+						vm.totalCount = data.count;
+						for (var i = 0; i < data.data.length; i++) {
+							if (data.data[i]) {
+								vm.tableData.push(data.data[i]);
+							}
+						}
+						vm.listLoading = false;
+					},
+					submit() {
+						// parent.location.reload();
+						// return
+						let data = httpCurl("FinanceWages/detail", {
+							t: this.year + "-" + this.month,
+							uid: this.uid
+						})
+						if (data.code == 200) {
+							layer.msg("查询成功", {
+								icon: 6,
+								time: 2000
+							});
+							this.show = true;
+							this.loadData(data);
+							// this.detail = data.data
+						} else {
+							layer.msg(data.msg, {
+								icon: 5,
+								time: 2000
+							});
+						}
+					},
+					dc() {
+						// parent.location.reload();
+						// return
+						if (this.year == "" || this.year == undefined) {
+							layer.msg("请选择年份", {
+								icon: 5,
+								time: 2000
+							});
+							return
+						}
+
+						if (this.month == "" || this.month == undefined) {
+							layer.msg("请选择月份", {
+								icon: 5,
+								time: 2000
+							});
+							return
+						}
+
+						if (this.uid == "" || this.uid == undefined) {
+							layer.msg("请选择用户", {
+								icon: 5,
+								time: 2000
+							});
+							return
+						}
+						let data = httpCurl("FinanceAchievements/export", {
+							t: this.year + "-" + this.month,
+							uid: this.uid
+						})
+						if (data.code == 200) {
+							layer.msg("即将开始下载", {
+								icon: 5,
+								time: 2000
+							}, function() {
+								window.location.href = data.data.url
+							});
+
+						} else {
+							layer.msg(data.msg, {
+								icon: 5,
+								time: 2000
+							});
+						}
+					}
+
+				},
+
+				mounted() {
+					let user = sessionStorage.getItem("user");
+					user = JSON.parse(user);
+					this.user = user;
+					console.log(user)
+				}
+			});
+
+
+			layui.use(['transfer', 'layer', 'util'], function() {
+				var $ = layui.$,
+					transfer = layui.transfer,
+					layer = layui.layer,
+					util = layui.util;
+
+				let data = httpCurl("FinanceWages/getAllUser", {})
+				//模拟数据
+				var data1 = data.data.info
+				//基础效果
+				transfer.render({
+					elem: '#test1',
+					data: data1,
+					title: [
+						[],
+						[]
+					],
+					width: 240,
+					height: 300,
+					showSearch: true,
+					width: 240,
+					height: 300,
+					showSearch: true,
+					onchange: function(data, index) {
+						var ttt = "";
+						for (var i = 0; i <= data.length - 1; i++) {
+							ttt += data[i]["value"] + ","
+						}
+
+						ttt = ttt.slice(0, ttt.length - 1)
+
+						vm.$data.uid = ttt;
+					}
+				})
+
+			});
+		</script>
+	</body>
+</html>

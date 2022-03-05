@@ -1,0 +1,508 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<title>苏北评估智地规划办公系统</title>
+		<link href="/static/css/bootstrap.min.css?v=3.3.6" rel="stylesheet">
+		<link href="/static/css/font-awesome.min.css?v=4.4.0" rel="stylesheet">
+		<link href="/static/css/animate.css" rel="stylesheet">
+		<!--<link href="/static/layui/css/layui.css" rel="stylesheet">-->
+		<link href="/static/css/plugins/iCheck/custom.css" rel="stylesheet">
+		<link href="/static/css/plugins/chosen/chosen.css" rel="stylesheet">
+		<link href="/static/css/plugins/switchery/switchery.css" rel="stylesheet">
+		<link href="/static/css/style.min.css?v=4.1.0" rel="stylesheet">
+		<link href="/static/elementUI/css/index.min.css" rel="stylesheet">
+		<script src="/static/elementUI/js/vue.min.js"></script>
+		<script src="/static/elementUI/js/index.min.js"></script>
+		<script src="/static/laydate/laydate.js"></script>
+		<link href="/static/select2/css/select2.css" rel="stylesheet" />
+		<link rel="stylesheet" href="/static/layui/css/layui.css">
+		<link href="/static/plugins/bootstrap-tagsinput/dist/bootstrap-tagsinput.css" rel="stylesheet">
+		<style type="text/css">
+			.long-tr th {
+				text-align: center
+			}
+
+			.long-td td {
+				text-align: center
+			}
+
+			/*elementUI分页样式*/
+			.layout-pagination {
+				text-align: right;
+				margin-top: 15px;
+			}
+
+			.control-label {
+				margin-top: 7px;
+				text-align: right;
+			}
+
+			.li {
+				display: inline-block;
+				font-size: 14px;
+				padding: 10px;
+				border: 1px solid #e7eaec;
+			}
+
+			.a {
+				text-decoration: none;
+				-webkit-tap-highlight-color: rgba(255, 255, 255, 0);
+				-webkit-user-select: none;
+				-moz-user-focus: none;
+				-moz-user-select: none;
+				color: black;
+			}
+
+			.a:hover {
+				color: black;
+			}
+
+			.act {
+				border-bottom: 3px solid #0064c8;
+			}
+
+			.xxx {
+				padding-top: 50px
+			}
+
+			.h3downline {
+				border-bottom: 1px solid #eee;
+				padding-bottom: 5px;
+				margin-bottom: 15px;
+				font-weight: bold;
+				color: black;
+			}
+		</style>
+	</head>
+	<body class="gray-bg">
+		<div class="wrapper wrapper-content animated fadeInRight">
+			<div class="row" id="app">
+				<div class="col-sm-12">
+					<div class="ibox float-e-margins">
+						<div class="ibox-title">
+							<ul>
+								<li class="li">
+									<a :href="'verify.html?id=' + project_id">项目信息</a>
+								</li>
+								<li class="li act">
+									<a :href="'data.html?id=' + project_id">项目资料</a>
+								</li>
+								<li class="li act">
+									<a :href="'achievements.html?id=' + project_id" style="color: #0064c8;">详细信息</a>
+								</li>
+							</ul>
+						</div>
+						<div class="ibox-content row" style="margin-left: 1px;margin-right: 1px;">
+							<div class="col-sm-4">
+								<h3 class="h3downline">项目信息</h3>
+								<table class="table table-striped table-bordered">
+									<tbody>
+										<tr>
+											<td style="width:100px">项目性质 </td>
+											<td>{{res.nature}}</td>
+										</tr>
+										<tr>
+											<td style="width:100px">项目概括 </td>
+											<td>{{res.survey}}</td>
+										</tr>
+										<tr>
+											<td style="width:100px">项目依据 </td>
+											<td>{{res.basis}}</td>
+										</tr>
+										<tr>
+											<td style="width:150px">项目参与人员 </td>
+											<td>{{res.partake_data}}</td>
+										</tr>
+										<tr>
+											<td style="width:100px">文字负责人 </td>
+											<td>{{res.word_nickname}}</td>
+										</tr>
+										<tr>
+											<td style="width:100px">辅助参与人员 </td>
+											<td>{{res.auxiliary}}</td>
+										</tr>
+										<tr>
+											<td style="width:160px">数据库图件负责人 </td>
+											<td>{{res.file_nickname}}</td>
+										</tr>
+										<tr>
+											<td style="width:160px">合作方 </td>
+											<td>{{res.partner}}</td>
+										</tr>
+										<tr>
+											<td style="width:160px">项目终止时间 </td>
+											<td>{{res.end_at}}</td>
+										</tr>
+
+
+									</tbody>
+								</table>
+							</div>
+
+							<div class="col-sm-4">
+								<h3 class="h3downline">本公司技术人员</h3>
+								<table class="table table-striped table-bordered" id="tb1">
+									<tbody>
+										<tr>
+											<th style="width:80px">名称 </th>
+											<th>考勤天数</th>
+											<th>补助费（元/天）</th>
+											<th>绩效工资（元）</th>
+											<th>总绩效（元）</th>
+										</tr>
+										<tr v-for="(item,index) in res.partake_data1">
+											<td style="font-weight:bold">{{item.nickname}}</td>
+											<input :id="'gs_uid_' + index" :value="item.uid" type="hidden">
+											<td>
+												<input :id="'gs_dayall_' + index" type="text"
+													class="form-control input-sm" value="0" @change="gs('dayall')">
+											</td>
+											<td>
+												<input :id="'gs_buzhu_' + index" type="text"
+													class="form-control input-sm" value="0" @change="gs('buzhu')">
+											</td>
+											<td>
+												<input :id="'gs_jixiao_' + index" type="text"
+													class="form-control input-sm" value="0" @change="gs('jixiao')">
+											</td>
+											<td>
+												<input :id="'gs_zong_' + index" type="text"
+													class="form-control input-sm" value="0" @change="gs('zong')">
+											</td>
+										</tr>
+										<tr>
+											<td style="font-weight:bold">小计</td>
+											<td>
+												<input id="gs_dayall" type="text" class="form-control input-sm"
+													readonly="readonly" value="0">
+											</td>
+											<td>
+												<input id="gs_buzhu" type="text" class="form-control input-sm"
+													readonly="readonly" value="0">
+											</td>
+											<td>
+												<input id="gs_jixiao" type="text" class="form-control input-sm"
+													readonly="readonly" value="0">
+											</td>
+											<td>
+												<input id="gs_zong" type="text" class="form-control input-sm"
+													readonly="readonly" value="0">
+											</td>
+										</tr>
+									</tbody>
+								</table>
+
+								<h3 class="h3downline">外聘技术人员</h3>
+								<table class="table table-striped table-bordered" id="tb2">
+									<tbody>
+										<tr>
+											<th style="width:80px">名称 </th>
+											<th>考勤天数</th>
+											<th>补助费（元/天）</th>
+											<th>绩效工资（元）</th>
+											<th>总绩效（元）</th>
+										</tr>
+										<tr v-for="(item,index) in res.auxiliary_data">
+											<input :id="'wb_uid_' + index" :value="item" type="hidden">
+											<td style="font-weight:bold">{{item}}</td>
+											<td>
+												<input :id="'wb_dayall_' + index" type="text"
+													class="form-control input-sm" value="0" @change="wb('dayall')">
+											</td>
+											<td>
+												<input :id="'wb_buzhu_' + index" type="text"
+													class="form-control input-sm" value="0" @change="wb('buzhu')">
+											</td>
+											<td>
+												<input :id="'wb_jixiao_' + index" type="text"
+													class="form-control input-sm" value="0" @change="wb('jixiao')">
+											</td>
+											<td>
+												<input :id="'wb_zong_' + index" type="text"
+													class="form-control input-sm" value="0" @change="wb('zong')">
+											</td>
+										</tr>
+										<tr>
+											<td style="font-weight:bold">小计</td>
+											<td>
+												<input id="wb_dayall" type="text" class="form-control input-sm"
+													readonly="readonly" value="0">
+											</td>
+											<td>
+												<input id="wb_buzhu" type="text" class="form-control input-sm"
+													readonly="readonly" value="0">
+											</td>
+											<td>
+												<input id="wb_jixiao" type="text" class="form-control input-sm"
+													readonly="readonly" value="0">
+											</td>
+											<td>
+												<input id="wb_zong" type="text" class="form-control input-sm"
+													readonly="readonly" value="0">
+											</td>
+										</tr>
+									</tbody>
+								</table>
+
+								<h3 class="h3downline">合计</h3>
+								<table class="table table-striped table-bordered" id="tb3">
+									<tbody>
+										<tr>
+											<th style="width:80px">名称 </th>
+											<th>考勤天数</th>
+											<th>补助费（元/天）</th>
+											<th>绩效工资（元）</th>
+											<th>总绩效（元）</th>
+										</tr>
+										<tr>
+											<td style="font-weight:bold">小计</td>
+											<td><input id="total_dayall" type="text" class="form-control input-sm"
+													readonly="readonly" value="0"></td>
+											<td><input id="total_buzhu" type="text" class="form-control input-sm"
+													readonly="readonly" value="0"></td>
+											<td><input id="total_jixiao" type="text" class="form-control input-sm"
+													readonly="readonly" value="0"></td>
+											<td><input id="total_zong" type="text" class="form-control input-sm"
+													readonly="readonly" value="0"></td>
+										</tr>
+									</tbody>
+								</table>
+								<div>
+									<input type="submit" class="btn btn-warning" value="提交审核" @click="submit(2)">
+								</div>
+							</div>
+
+							<div class="col-sm-4">
+								<div class="card-box">
+									<h3 class="h3downline">绩效列表</h3>
+									<table id="datatable" class="table-bordered  table table-hover">
+										<tbody>
+											<tr>
+												<th>考勤</th>
+												<th>补助费</th>
+												<th>绩效</th>
+												<th>总绩效</th>
+												<th>日期</th>
+												<th>状态</th>
+												<th></th>
+											</tr>
+											<tr v-for="(item,index) in list">
+												<td>{{item.total_work}}</td>
+												<td>{{item.total_subsidy}}</td>
+												<td>{{item.total_wages}}</td>
+												<td>{{item.total_all_work}}</td>
+												<td>{{item.created_at}}</td>
+												<td v-if="item.status == 1"></td>
+												<td v-if="item.status == 2">待审</td>
+												<td v-if="item.status == 3">通过</td>
+												<td v-if="item.status == 4">拒绝</td>
+												<td v-if="item.status != 3 && item.status != 4">
+													<button type="button" class="btn btn-success btn-sm" @click="verify(item.id, 1)">通过</button>
+													<button type="button" class="btn btn-danger btn-sm" @click="verify(item.id, 2)">拒绝</button>
+												</td>
+											</tr>
+
+
+										</tbody>
+									</table>
+									
+								</div>
+							</div>
+
+						</div>
+					</div>
+
+
+				</div>
+				<script src="/static/js/jquery.min.js?v=2.1.4"></script>
+				<script src="/static/js/bootstrap.min.js?v=3.3.6"></script>
+				<script src="/static/js/content.min.js?v=1.0.0"></script>
+				<script src="/static/js/plugins/chosen/chosen.jquery.js"></script>
+				<script src="/static/js/plugins/iCheck/icheck.min.js"></script>
+				<!-- <script src="/static/js/plugins/layer/laydate/laydate.js"></script> -->
+				<script src="/static/js/plugins/switchery/switchery.js"></script>
+				<!-- <script src="/static/layui/layui.js"></script> -->
+				<!--IOS开关样式-->
+				<script src="/static/js/jquery.form.js"></script>
+				<script src="/static/js/moment.min.js"></script>
+				<script src="/static/js/layer/layer.js"></script>
+				<script src="/static/js/laypage/laypage.js"></script>
+				<script src="/static/js/laytpl/laytpl.js"></script>
+				<script src="/static/js/lunhui.js"></script>
+				<script src="/js/globe.js"></script>
+				<script src="/static/select2/js/select2.js"></script>
+				<!-- <script type="text/javascript" src="/static/webupload/webuploader.min.js"></script> -->
+				<script src="/static/plugins/bootstrap-tagsinput/dist/bootstrap-tagsinput.min.js"></script>
+
+				<script>
+					$(document).ready(function() {
+						$(".i-checks").iCheck({
+							checkboxClass: "icheckbox_square-green",
+							radioClass: "iradio_square-green",
+						});
+						var myDate = new Date;
+						var year = myDate.getFullYear(); //获取当前年
+						var mon = myDate.getMonth() + 1; //获取当前月
+						var date = myDate.getDate(); //获取当前日
+						var h = myDate.getHours(); //获取当前小时数(0-23)
+						var m = myDate.getMinutes(); //获取当前分钟数(0-59)
+						var s = myDate.getSeconds(); //获取当前秒
+						var value = year + "-" + mon + "-" + date + " " + h + ":" + m + ":" + s;
+						console.log(value)
+						$("#created_at").val(value)
+					});
+				</script>
+
+
+				<script type="text/javascript">
+					// import Modal from './Modal';
+
+					var vm = new Vue({
+						el: '#app',
+						data: {
+							project_id:0,
+							user: {},
+							res: {},
+							postData: {},
+							data: [],
+							list:[]
+
+						},
+
+						methods: {
+							gs(value) {
+								let length = this.res.partake_data1.length;
+								let amount = 0;
+								for (let i = 0; i <= length - 1; i++) {
+									amount += parseInt($("#gs_" + value + "_" + i).val())
+								}
+								$("#gs_" + value).val(amount)
+
+								let length1 = this.res.auxiliary_data.length;
+								let amount1 = 0;
+								for (let i = 0; i <= length1 - 1; i++) {
+									amount1 += parseInt($("#wb_" + value + "_" + i).val())
+								}
+
+								$("#total_" + value).val(amount + amount1)
+
+							},
+							wb(value) {
+								let length = this.res.auxiliary_data.length;
+								let amount = 0;
+								for (let i = 0; i <= length - 1; i++) {
+									amount += parseInt($("#wb_" + value + "_" + i).val())
+								}
+								$("#wb_" + value).val(amount)
+
+								let length1 = this.res.partake_data1.length;
+								let amount1 = 0;
+								for (let i = 0; i <= length1 - 1; i++) {
+									amount1 += parseInt($("#gs_" + value + "_" + i).val())
+								}
+								$("#total_" + value).val(amount + amount1)
+							},
+							total() {
+								// 计算本公司所有
+								let length = this.res.partake_data1.length;
+								for (let i = 0; i <= length - 1; i++) {
+									let arr = {
+										type: 1,
+										uid: $("#gs_uid_" + i).val(),
+										work: $("#gs_dayall_" + i).val(),
+										subsidy: $("#gs_buzhu_" + i).val(),
+										wages: $("#gs_jixiao_" + i).val(),
+										all_work: $("#gs_zong_" + i).val(),
+
+									}
+									this.data.push(arr)
+								}
+
+								let length1 = this.res.auxiliary_data.length;
+								for (let i = 0; i <= length1 - 1; i++) {
+									let arr = {
+										type: 2,
+										uid: $("#wb_uid_" + i).val(),
+										work: $("#wb_dayall_" + i).val(),
+										subsidy: $("#wb_buzhu_" + i).val(),
+										wages: $("#wb_jixiao_" + i).val(),
+										all_work: $("#wb_zong_" + i).val(),
+
+									}
+									this.data.push(arr)
+								}
+
+
+							},
+							submit(status) {
+								this.total()
+								let postData = {
+									project_id: this.res.project_id,
+									data: JSON.stringify(this.data),
+									status: status
+								}
+
+								let data = httpCurl("ProjectAchievements/add", postData)
+								if (data.code == 200) {
+									layer.msg(data.msg, {
+										icon: 6,
+										time: 2000
+									}, function() {
+										location.reload()
+									});
+								} else {
+									layer.msg(data.msg, {
+										icon: 5,
+										time: 2000
+									});
+								}
+							},
+							verify(id, status) {
+								let postData = {
+									id: id,
+									status: status
+								}
+
+								let data = httpCurl("ProjectAchievements/verify", postData)
+								if (data.code == 200) {
+									layer.msg(data.msg, {
+										icon: 6,
+										time: 2000
+									}, function() {
+										location.reload()
+									});
+								} else {
+									layer.msg(data.msg, {
+										icon: 5,
+										time: 2000
+									});
+								}
+							},
+						},
+						mounted() {
+							let user = sessionStorage.getItem("user");
+							user = JSON.parse(user);
+							this.user = user;
+							this.res.uid = user.uid;
+
+							this.project_id = getUrlKey("id")
+							let data1 = httpCurl("project/infoDetail", {
+								project_id: getUrlKey("id")
+							});
+
+							this.res = data1.data
+							
+							let data2 = httpCurl("ProjectAchievements/getList", {
+								project_id: getUrlKey("id")
+							});
+							
+							this.list = data2.data.info
+
+
+						}
+					});
+				</script>
+	</body>
+</html>

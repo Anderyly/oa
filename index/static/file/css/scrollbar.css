@@ -1,0 +1,52 @@
+/*滚动条样式*/
+.scro{
+	
+}
+ .scro::-webkit-scrollbar {
+ 	width: 4px;
+ 	/*height: 4px;*/
+ }
+
+ .scro::-webkit-scrollbar-thumb {
+ 	border-radius: 10px;
+ 	-webkit-box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.2);
+ 	background: rgba(219,92,83, 0.2);
+ }
+
+ .scro::-webkit-scrollbar-track {
+ 	-webkit-box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.2);
+ 	border-radius: 0;
+ 	background: rgba(219,92,83, 0.1);
+
+ }
+ 
+ /* 滚动条2 */
+.scro2{
+	  
+  }
+ .scro2::-webkit-scrollbar-thumb:horizontal { /*水平滚动条的样式*/
+     width: 4px;
+     background-color: #CCCCCC;
+     -webkit-border-radius: 6px;
+ }
+.scro2::-webkit-scrollbar-track-piece {
+     background-color: #fff; /*滚动条的背景颜色*/
+     -webkit-border-radius: 0; /*滚动条的圆角宽度*/
+ }
+.scro2::-webkit-scrollbar {
+     width: 10px; /*滚动条的宽度*/
+     height: 8px; /*滚动条的高度*/
+ }
+.scro2::-webkit-scrollbar-thumb:vertical { /*垂直滚动条的样式*/
+     height: 50px;
+     background-color: #999;
+     -webkit-border-radius: 4px;
+     outline: 2px solid #fff;
+     outline-offset: -2px;
+     border: 2px solid #fff;
+ }
+.scro2::-webkit-scrollbar-thumb:hover { /*滚动条的hover样式*/
+     height: 50px;
+     background-color: #9f9f9f;
+     -webkit-border-radius: 4px;
+ }

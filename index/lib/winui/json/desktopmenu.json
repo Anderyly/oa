@@ -1,0 +1,170 @@
+	{
+  "code": 1,
+  "message": "成功",
+  "data": [
+    {
+      "title": "主题",
+      "pageURL": "theme",
+      "name": "主题",
+      "icon": "theme",
+      "openType": 1,
+      "maxOpen": -1,
+      "extend": false,
+      "childs": null,
+      "id": 1
+    },
+    {
+      "title": "案例管理",
+      "pageURL": "views/case/add.html",
+      "name": "案例管理",
+      "icon": "cases",
+      "openType": 2,
+      "extend": false,
+      "childs": null,
+      "id": 1100
+    },
+    {
+      "title": "报告管理",
+      "pageURL": "views/report/list.html",
+      "name": "报告管理",
+      "icon": "report",
+      "openType": 2,
+      "maxOpen": -1,
+      "extend": false,
+      "childs": null,
+      "id": 1000
+    },
+    {
+      "title": "项目管理",
+      "pageURL": "views/project/list.html",
+      "name": "项目管理",
+      "icon": "project",
+      "openType": 2,
+      "maxOpen": -1,
+      "extend": false,
+      "childs": null,
+      "id": 900
+    },
+    {
+      "title": "档案管理",
+      "pageURL": "views/file/report_close.html",
+      "name": "档案管理",
+      "icon": "file",
+      "openType": 2,
+      "maxOpen": -1,
+      "extend": false,
+      "childs": null,
+      "id": 800
+    },
+    {
+      "title": "考勤管理",
+      "pageURL": "views/leave/list.html",
+      "name": "考勤管理",
+      "icon": "leave",
+      "openType": 2,
+      "maxOpen": -1,
+      "extend": false,
+      "childs": null,
+      "id": 23112
+    },
+    {
+      "title": "报销管理",
+      "pageURL": "views/reimbursement/list.html",
+      "name": "报销管理",
+      "icon": "reimbursement",
+      "openType": 2,
+      "maxOpen": -1,
+      "extend": false,
+      "childs": null,
+      "id": 700
+    },
+    {
+      "title": "工具管理",
+      "pageURL": "views/tools/list.html",
+      "name": "工具管理",
+      "icon": "tools",
+      "openType": 2,
+      "maxOpen": -1,
+      "extend": false,
+      "childs": null,
+      "id": 600
+    },
+    {
+      "title": "资料管理",
+      "pageURL": "views/document/share.html",
+      "name": "资料管理",
+      "icon": "document",
+      "openType": 2,
+      "maxOpen": -1,
+      "extend": false,
+      "childs": null,
+      "id": 100
+    },
+    {
+      "title": "合同管理",
+      "pageURL": "views/contract/share.html",
+      "name": "合同管理",
+      "icon": "contract",
+      "openType": 2,
+      "maxOpen": -1,
+      "extend": false,
+      "childs": null,
+      "id": 200
+    },
+    {
+      "title": "统计汇总",
+      "pageURL": "views/total/tools.html",
+      "name": "统计汇总",
+      "icon": "total",
+      "openType": 2,
+      "maxOpen": -1,
+      "extend": false,
+      "childs": null,
+      "id": 300
+    },
+    {
+      "title": "通知公告",
+      "pageURL": "views/notice/list.html",
+      "name": "通知公告",
+      "icon": "notice",
+      "openType": 2,
+      "maxOpen": -1,
+      "extend": false,
+      "childs": null,
+      "id": 400
+    },
+    {
+      "title": "财务管理",
+      "pageURL": "views/role/my.html",
+      "name": "财务管理",
+      "icon": "role",
+      "openType": 2,
+      "maxOpen": -1,
+      "extend": false,
+      "childs": null,
+      "id": 500
+    },
+    {
+      "title": "组织管理",
+      "pageURL": "views/organ/user.html",
+      "name": "组织管理",
+      "icon": "organ",
+      "openType": 2,
+      "maxOpen": -1,
+      "extend": false,
+      "childs": null,
+      "id": 221
+    },
+	{
+	  "title": "字典管理",
+	  "pageURL": "views/dictionary/report_seal.html",
+	  "name": "字典管理",
+	  "icon": "dictionary",
+	  "openType": 2,
+	  "maxOpen": -1,
+	  "extend": false,
+	  "childs": null,
+	  "id": 222
+	}
+  ]
+}

@@ -1,0 +1,723 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8"/>
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+    <meta name="theme-color" content="#000000">
+    <meta name="renderer" content="webkit">
+    <meta name="google" content="notranslate">
+    <meta name="format-detection" content="telephone=no">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>文件管理</title>
+
+</head>
+
+<link rel="stylesheet" type="text/css" href="/static/file/css/default.css"/>
+<link rel="stylesheet" type="text/css" href="/static/file/css/scrollbar.css">
+<link href="/static/css/bootstrap.min.css?v=3.3.6" rel="stylesheet">
+<link href="/static/css/font-awesome.min.css?v=4.4.0" rel="stylesheet">
+<link href="/static/css/animate.css" rel="stylesheet">
+<!--<link href="/static/layui/css/layui.css" rel="stylesheet">-->
+<link href="/static/css/plugins/iCheck/custom.css" rel="stylesheet">
+<link href="/static/css/plugins/chosen/chosen.css" rel="stylesheet">
+<link href="/static/css/plugins/switchery/switchery.css" rel="stylesheet">
+<link href="/static/css/style.min.css?v=4.1.0" rel="stylesheet">
+<link href="/static/elementUI/css/index.min.css" rel="stylesheet">
+<script src="/static/elementUI/js/vue.min.js"></script>
+<script src="/static/elementUI/js/index.min.js"></script>
+<script src="/static/laydate/laydate.js"></script>
+<link href="/static/select2/css/select2.css" rel="stylesheet" />
+<link rel="stylesheet" type="text/css" href="/static/webupload/webuploader.css">
+<link rel="stylesheet" type="text/css" href="/static/webupload/style.css">
+
+<!--<button onclick="ref()">刷新</button>-->
+<script>
+    function ref() {
+        location.reload()
+    }
+</script>
+
+
+<style type="text/css">
+    html, body {
+        cursor: url("/static/file/img/mouse.ico"), auto;
+    }
+
+    /* 超小屏幕（手机，小于 768px） */
+    /* 没有任何媒体查询相关的代码，因为这在 Bootstrap 中是默认的（还记得 Bootstrap 是移动设备优先的吗？） */
+    @media (max-width: 768px) {
+        .head {
+            height: 80px;
+        }
+
+        .head_l {
+            height: 40px;
+            float: none;
+        }
+
+        .head_r {
+            position: relative;
+            border: 1px solid #000000;
+            top: 1px;
+            float: none;
+        }
+
+        .dialog {
+            width: 300px;
+            height: 100px;
+            margin-left: -150px; /* 宽度的一半 */
+        }
+
+    }
+
+    /* 小屏幕（平板，大于等于 768px） */
+    @media (min-width: 768px) {
+        .head {
+            height: 40px;
+        }
+
+        .head_l {
+            height: 40px;
+            float: left;
+        }
+
+        .head_r {
+
+            float: left;
+        }
+
+        .dialog {
+            width: 400px;
+            height: 150px;
+            margin-left: -200px; /* 宽度的一半 */
+        }
+
+    }
+
+    /* 中等屏幕（桌面显示器，大于等于 992px） */
+    @media (min-width: 992px) {
+        .head {
+            height: 40px;
+        }
+
+        .head_l {
+            height: 40px;
+            float: left;
+        }
+
+        .head_r {
+
+            float: left;
+        }
+
+        .dialog {
+            width: 400px;
+            height: 150px;
+            margin-left: -200px; /* 宽度的一半 */
+        }
+
+    }
+
+    /* 大屏幕（大桌面显示器，大于等于 1200px） */
+    @media (min-width: 1200px) {
+        .head {
+            height: 40px;
+        }
+
+        .head_l {
+            height: 40px;
+            float: left;
+        }
+
+        .head_r {
+
+            float: left;
+        }
+
+        .dialog {
+            width: 500px;
+            height: 290px;
+            margin-left: -250px; /* 宽度的一半 */
+        }
+
+    }
+
+    @keyframes turn {
+        0% {
+            -webkit-transform: rotate(0deg);
+        }
+        25% {
+            -webkit-transform: rotate(90deg);
+        }
+        50% {
+            -webkit-transform: rotate(180deg);
+        }
+        75% {
+            -webkit-transform: rotate(270deg);
+        }
+        100% {
+            -webkit-transform: rotate(360deg);
+        }
+    }
+
+    @keyframes myfirst {
+        0% {
+            background: #84AF9B;
+
+
+        }
+        50% {
+            background: #43c6ac;
+
+        }
+        100% {
+            background: #6190E8;
+
+        }
+    }
+
+    @-moz-keyframes myfirst /* Firefox */
+    {
+        from {
+            background: red;
+        }
+        to {
+            background: yellow;
+        }
+    }
+
+    @-webkit-keyframes myfirst /* Safari 和 Chrome */
+    {
+        from {
+            background: red;
+        }
+        to {
+            background: yellow;
+        }
+    }
+
+    @-o-keyframes myfirst /* Opera */
+    {
+        from {
+            background: red;
+        }
+        to {
+            background: yellow;
+        }
+    }
+</style>
+
+<style type="text/css">
+    .long-tr th {
+        text-align: center
+    }
+
+    .long-td td {
+        text-align: center
+    }
+
+    /*elementUI分页样式*/
+    .layout-pagination {
+        text-align: right;
+        margin-top: 15px;
+    }
+
+    .control-label {
+        margin-top: 7px;
+        text-align: right;
+    }
+
+    .li {
+        display: inline-block;
+        font-size: 14px;
+        padding: 10px;
+        border: 1px solid #e7eaec;
+    }
+
+    a {
+        text-decoration: none;
+        -webkit-tap-highlight-color: rgba(255, 255, 255, 0);
+        -webkit-user-select: none;
+        -moz-user-focus: none;
+        -moz-user-select: none;
+        color: black;
+    }
+
+    a:hover {
+        color: black;
+    }
+
+    .act {
+        border-bottom: 3px solid #0064c8;
+    }
+
+    .xxx {
+        padding-top: 50px
+    }
+
+    .h3downline {
+        border-bottom: 1px solid #eee;
+        padding-bottom: 5px;
+        margin-bottom: 15px;
+        font-weight: bold;
+        color: black;
+    }
+</style>
+
+
+<body class="gray-bg scro2 wrapper wrapper-content animated fadeInRight">
+<!--<div id="mengban" class="mengban"></div>-->
+<div class="row" id="app">
+    <div class="ibox-title">
+        <ul>
+            <li class="li">
+                <a :href="'verify.html?id=' + project_id">项目信息</a>
+            </li>
+            <li class="li">
+                <a :href="'log.html?id=' + project_id">工作周志</a>
+            </li>
+            <li class="li act">
+                <a :href="'data.html?id=' + project_id" style="color: #0064c8;">项目资料</a>
+            </li>
+            <li class="li">
+                <a :href="'detail.html?id=' + project_id">详细信息</a>
+            </li>
+        </ul>
+    </div>
+    <div class="ibox-title" style="background-color: none;border-color: none">
+        <div id="imgPicker">选择文件上传</div>
+    </div>
+
+    <hr style="height: 1px; background-color: none;">
+    <div id="content" class="content">
+        <input type="hidden" value="" name="currentPath" id="currentPath"/>
+        <div id="c_body" class="c_body scro2">
+
+            <div class="file" v-for="(item,index) in res" :acd="item.id">
+                <div :class="item.ext">
+                </div>
+                <div :id="'name' + item.id" class="name" :link="item.url">
+                    <span style="display:block;text-align: center;">{{item.name}}.{{item.ext}}</span>
+                </div>
+            </div>
+
+        </div>
+    </div>
+<!--    <div id="foot" class="foot">-->
+<!--        <div class="details" id="details_img">-->
+<!--            <div class="mp4">-->
+<!--            </div>-->
+<!--        </div>-->
+<!--        <div class="info_details float_l" id="fileName">-->
+<!--            文件名:-->
+<!--        </div>-->
+<!--        <div class="info_details float_l" id="fileSize">-->
+<!--            大小:-->
+<!--        </div>-->
+<!--        <div class="info_details float_l" id="fileType">-->
+<!--            文件类型:-->
+<!--        </div>-->
+<!--        <div class="info_details float_l" id="createBy">-->
+<!--            上传者:-->
+<!--        </div>-->
+<!--        <div class="info_details float_l" id="createDate">-->
+<!--            上传时间:-->
+<!--        </div>-->
+<!--    </div>-->
+    <!--body的右击菜单-->
+    <ul class="contextmenu">
+
+<!--        <li><a href="#" onclick="upload()">上传</a></li>-->
+
+<!--        <li><a href="#">属性</a></li>-->
+
+    </ul>
+    <!--文件右击菜单-->
+    <ul class="file_menu">
+
+        <li><a href="javascript:;" @click="down">下载</a></li>
+
+        <li><a href="javascript:;" @click="del">删除</a></li>
+
+<!--        <li><a href="javascript:;" @click="rename">重命名</a></li>-->
+
+<!--        <li><a href="#">属性</a></li>-->
+
+    </ul>
+    <!--文件夹右击菜单-->
+    <ul class="dir_menu">
+
+        <li><a href="#">打开</a></li>
+
+        <li><a href="#">删除</a></li>
+
+        <li><a href="#">重命名</a></li>
+
+        <li><a href="#">打包下载</a></li>
+
+        <li><a href="#">属性</a></li>
+
+    </ul>
+</div>
+
+</body>
+<script src="/static/js/jquery.min.js?v=2.1.4"></script>
+<!-- <script type="text/javascript" src="/static/file/js/jquery.min.js"></script> -->
+<!-- <script src="https://unpkg.com/axios/dist/axios.min.js"></script> -->
+<script src="/static/elementUI/js/vue.min.js"></script>
+<script src="/js/globe.js"></script>
+<script src="/static/js/layer/layer.js"></script>
+<script type="text/javascript" src="/static/webupload/webuploader.min.js"></script>
+
+<script type="text/javascript">
+    var vm = new Vue({
+        el: '#app',
+        data: {
+            res: "",
+            file_id: 0,
+            project_id: 0
+        },
+        methods: {
+            down() {
+                let link = $("#name" + this.file_id).attr("link")
+                window.location.href = link
+            },
+            del() {
+
+                let data = httpCurl("project/delFile", {
+                    id: this.file_id
+                });
+
+                if (data.code == 200) {
+                    let data = httpCurl("project/odata", {
+                        id: this.project_id
+                    });
+
+                    this.res = data.data
+
+                } else {
+                    alert("网络错误")
+                }
+            },
+        },
+        mounted() {
+            this.project_id = getUrlKey("id")
+            let data = httpCurl("project/odata", {
+                id: this.project_id
+            });
+
+            this.res = data.data
+        }
+    });
+
+</script>
+
+<script>
+
+    var uploader = WebUploader.create({
+
+        auto: true, // 选完文件后，是否自动上传。
+        swf: '/static/webupload/Uploader.swf', // swf文件路径
+        server: sessionStorage.getItem("url") + "user/upload", // 文件接收服务端。
+        duplicate: true, // 重复上传图片，true为可重复false为不可重复
+        pick: '#imgPicker', // 选择文件的按钮。可选。
+        formData: {
+            token: sessionStorage.getItem("token"),
+            ctype: 2,
+            cid: vm.$data.project_id
+        },
+
+        // accept: {
+        // 	title: 'Images',
+        // 	extensions: 'gif,jpg,jpeg,bmp,png',
+        // 	mimeTypes: 'image/jpg,image/jpeg,image/png'
+        // },
+
+        'onUploadSuccess': function(file, data, response) {
+
+            if (data.code == 200) {
+                let data = httpCurl("project/odata", {
+                    id: vm.$data.project_id
+                });
+
+                vm.$data.res = data.data
+                layer.msg("上传成功", {
+                    icon: 6,
+                    time: 1500,
+                    shade: 0.1
+                }, function(index) {
+
+                    layer.close(index);
+                });
+
+            } else {
+                layer.msg(data.msg, {
+                    icon: 5,
+                    time: 1500,
+                    shade: 0.1
+                }, function(index) {
+                    layer.close(index);
+                });
+            }
+        }
+    });
+
+    var flag = 0;
+    var files = new Array();
+    $(document).ready(function(){
+        /*提交按钮*/
+        $("#submit_btn").on("click",function(){
+            console.log("点击了按钮");
+            $.each(files,function(index,item){
+                console.log(index+":"+item);
+                uploadFile(item,index);
+            });
+        });
+        /*弹出框添加按钮事件*/
+        $("#addBtn").on("click",function(){
+            $("#files").click();
+        });
+        /*选择文件时候，弹出框多加正方形框，如果是图片，则选择展示图片，如果是其他文件，则显示格式图标*/
+        $('#files').on('change',function(){
+            flag = flag +1;
+            if(flag == 8){
+                console.log("flag:"+flag);
+                $("#addBtn").css("display","none");
+            }
+            var file = $('#files').get(0).files[0];
+            files[flag-1] = file;
+            var fileDiv = "<div id=" + "file"+flag+" class='centre addFile removeBackImg '><div class='close_icon' ></div><div id='progressNumber"+(flag-1)+"'></div><div id='progressNumber'></div></div>"
+            $("#addBtn").before(fileDiv);
+            var filePath = $(this).val();         //获取到input的value，里面是文件的路径
+            var fileFormat = filePath.substring(filePath.lastIndexOf(".")).toLowerCase();
+            // 检查是否是图片
+            if(fileFormat.match(/.png|.jpg|.jpeg/) ) {
+                var src = window.URL.createObjectURL(this.files[0]); //转成可以在本地预览的格式
+                $('#addBtn').prev().prepend("<img style='width:90%;' src="+src+">")
+            }
+        });
+
+        $(document).contextmenu(function(e){
+            var actives = $(".dir_file_active");
+            actives.each(function(index,item){
+                $(item).removeClass("dir_file_active");
+            });
+            $(".file_menu").hide();
+            $(".dir_menu").hide();
+            var winWidth = $(document).width();
+
+            var winHeight = $(document).height();
+
+            var posX = e.pageX;
+
+            var posY = e.pageY;
+
+            var menuWidth = $(".contextmenu").width();
+
+            var menuHeight = $(".contextmenu").height();
+
+            var secMargin = 10;
+
+            if(posX + menuWidth + secMargin >= winWidth
+
+                && posY + menuHeight + secMargin >= winHeight){
+
+                posLeft = posX - menuWidth - secMargin + "px";
+
+                posTop = posY - menuHeight - secMargin + "px";
+
+            }
+
+            else if(posX + menuWidth + secMargin >= winWidth){
+
+                posLeft = posX - menuWidth - secMargin + "px";
+
+                posTop = posY + secMargin + "px";
+
+            }
+
+            else if(posY + menuHeight + secMargin >= winHeight){
+
+                posLeft = posX + secMargin + "px";
+
+                posTop = posY - menuHeight - secMargin + "px";
+
+            }
+
+            else {
+
+                posLeft = posX + secMargin + "px";
+
+                posTop = posY + secMargin + "px";
+
+            };
+
+            $(".contextmenu").css({
+
+                "left": posLeft,
+
+                "top": posTop
+
+            }).show();
+
+            return false;
+
+        });
+
+        $(document).click(function(){
+
+            $(".contextmenu").hide();
+            $(".file_menu").hide();
+        });
+
+        $(".file").contextmenu(function(e){
+            console.log("右击了图标");
+            vm.$data.file_id = $(this).attr("acd")
+            console.log(vm.$data.file_id)
+            var actives = $(".dir_file_active");
+            actives.each(function(index,item){
+                $(item).removeClass("dir_file_active");
+            });
+            $(this).addClass("dir_file_active");
+            $(".contextmenu").hide();
+            $(".dir_menu").hide();
+            var winWidth = $(".file").width();
+
+            var winHeight = $(".file").height();
+
+            var posX = e.pageX;
+
+            var posY = e.pageY;
+
+            var menuWidth = $(".file_menu").width();
+
+            var menuHeight = $(".file_menu").height();
+
+            var secMargin = 5;
+
+            var posLeft = (posX+secMargin) + "px";
+            var posTop = (posY+secMargin) + "px";
+            dirOrFileClick(this);
+            $(".file_menu").css({
+
+                "left": posLeft,
+
+                "top": posTop
+
+            }).show();
+            return false;
+        });
+
+        /* 文件夹右键列表 */
+        $(".dir").contextmenu(function(e){
+            console.log("文件夹右击了图标");
+            var actives = $(".dir_file_active");
+            actives.each(function(index,item){
+                $(item).removeClass("dir_file_active");
+            });
+            $(this).addClass("dir_file_active");
+            $(".file_menu").hide();
+            $(".contextmenu").hide();
+            var winWidth = $(".dir").width();
+
+            var winHeight = $(".dir").height();
+
+            var posX = e.pageX;
+
+            var posY = e.pageY;
+
+            var menuWidth = $(".dir_menu").width();
+
+            var menuHeight = $(".dir_menu").height();
+
+            var secMargin = 5;
+
+            var posLeft = (posX+secMargin) + "px";
+            var posTop = (posY+secMargin) + "px";
+            dirOrFileClick(this);
+
+            $(".dir_menu").css({
+
+                "left": posLeft,
+
+                "top": posTop
+
+            }).show();
+            return false;
+        });
+
+        $(".dir,.file").on("click",function(){
+            dirOrFileClick(this);
+        });
+        $("#close_icon").on("click",function(){
+            close();
+        });
+    });
+    //文件夹和文件的单击事件
+    function dirOrFileClick(t){
+        //移除点击右键列表
+        $(".file_menu").hide();
+        $(".dir_menu").hide();
+        $(".contextmenu").hide();
+
+        // console.log("点击了文件或文件夹");
+        //移除当时被激活的图标
+        var actives = $(".dir_file_active");
+        actives.each(function(index,item){
+            $(item).removeClass("dir_file_active");
+        });
+        //激活当前点击的图标
+        $(t).addClass("dir_file_active");
+
+        //下面列表获取详细信息展示
+        $("#details_img div").removeClass();
+        $("#details_img div").addClass($(t).children("div:eq(0)").attr("class"));
+    }
+    //弹出上传框
+    function upload(){
+
+        $("body").css('overflow-y','hidden');
+        $("#upload_div").removeAttr("style");
+        $("#mengban").css("display","block");
+    }
+    //关闭弹出框
+    function close(){
+        $("#upload_div").attr("style",'display:none;');
+        $("#mengban").css("display","none");
+        $("body").css('overflow-y','auto');
+    }
+
+    <!--文件上传的js-->
+    function fileSelected() {
+        var file = document.getElementById('fileToUpload').files[0];
+        if (file) {
+            var fileSize = 0;
+            if (file.size > 1024 * 1024)
+                fileSize = (Math.round(file.size * 100 / (1024 * 1024)) / 100).toString() + 'MB';
+            else
+                fileSize = (Math.round(file.size * 100 / 1024) / 100).toString() + 'KB';
+
+            document.getElementById('fileName').innerHTML = '文件名: ' + file.name;
+            document.getElementById('fileSize').innerHTML = '文件大小: ' + fileSize;
+            document.getElementById('fileType').innerHTML = '文件类型: ' + file.type;
+        }
+    }
+    /**
+     * 监听键盘事件
+     */
+    $(document).keydown(function(event){
+        var key =  event.which || event.keyCode;;
+        if(key == 27){
+            /*隐藏上传弹出框*/
+            $("#upload_div").fadeOut("slow");
+            $("#mengban").hide();
+            $(".contextmenu").fadeOut("slow");
+            $(".dir_menu").fadeOut("slow");
+            $(".file_menu").fadeOut("slow");
+            $("body").css('overflow-y','auto');
+        }
+    });
+
+</script>
+</html>

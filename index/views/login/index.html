@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+		<title>苏北评估公司内部OA管理系统-用户登录</title>
+
+		<link href="../../static/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
+		<link href="../../static/css/core.css" rel="stylesheet" type="text/css" />
+		<link href="../../static/css/components.css" rel="stylesheet" type="text/css" />
+		<link href="../../static/css/icons.css" rel="stylesheet" type="text/css" />
+		<link href="../../static/css/pages.css" rel="stylesheet" type="text/css" />
+		<link href="../../static/css/responsive.css" rel="stylesheet" type="text/css" />
+		<link href="../../static/plugins/datatables/jquery.dataTables.min.css" rel="stylesheet" type="text/css" />
+		<link href="../../static/plugins/bootstrap-datepicker/dist/css/bootstrap-datepicker.min.css" rel="stylesheet">
+		<!-- HTML5 Shiv and Respond.js IE8 support of HTML5 elements and media queries -->
+		<!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+		<!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+    <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
+    <![endif]-->
+		<!--progress-->
+		<script src="../../static/js/jquery.min.js"></script>
+		<link href="../../Static/progress/nprogress.css" rel="stylesheet" />
+		<script src="../../Static/progress/nprogress.js"></script>
+		<script src="../../static/js/modernizr.min.js"></script>
+
+	</head>
+	<body style="display:none">
+		<div class="account-pages"></div>
+		<div class="clearfix"></div>
+		<div class="wrapper-page">
+			<div class=" card-box">
+				<div class="panel-heading">
+					<h4 class="text-center"> 欢迎登陆 <br /><strong class="text-custom">苏北评估公司内部OA管理系统</strong> </h4>
+				</div>
+
+				<div class="panel-body">
+					<!-- <form class="form-horizontal m-t-20" action="/login/login" method="post"> -->
+					<form class="form-horizontal" name="form" id="form" method="post" action="user/login">
+
+						<div class="form-group ">
+							<div class="col-xs-12">
+								<input class="form-control  validate[required]" type="text" name="account" id="account"
+									value="test" placeholder="用户名">
+							</div>
+						</div>
+
+						<div class="form-group">
+							<div class="col-xs-12">
+								<input class="form-control  validate[required]" type="password" name="password"
+									id="password" value="123456" placeholder="密码">
+							</div>
+						</div>
+
+
+
+						<div class="form-group text-center m-t-40">
+							<div class="col-xs-12">
+								<button class="btn btn-pink btn-block text-uppercase waves-effect waves-light"
+									type="submit">登陆</button>
+							</div>
+						</div>
+
+						<div class="form-group m-t-30 m-b-0">
+							<div class="col-sm-12">
+								<a href="javascript:;" class="text-dark" onclick="alert('请联系系统管理员')"><i
+										class="fa fa-lock m-r-5"></i> 忘记密码?</a>
+							</div>
+						</div>
+					</form>
+
+				</div>
+			</div>
+
+		</div>
+		<script>
+			var resizefunc = [];
+		</script>
+
+		<!-- jQuery  -->
+		<script src="../../static/js/jquery.min.js"></script>
+		<script src="../../static/js/bootstrap.min.js"></script>
+		<script src="../../static/js/detect.js"></script>
+		<script src="../../static/js/fastclick.js"></script>
+		<script src="../../static/js/jquery.slimscroll.js"></script>
+		<script src="../../static/js/jquery.blockUI.js"></script>
+		<script src="../../static/js/waves.js"></script>
+		<script src="../../static/js/wow.min.js"></script>
+		<script src="../../static/js/jquery.nicescroll.js"></script>
+		<script src="../../static/js/jquery.scrollTo.min.js"></script>
+
+		<script src="../../static/js/content.min.js?v=1.0.0"></script>
+		<script src="../../static/js/plugins/chosen/chosen.jquery.js"></script>
+		<script src="../../static/js/plugins/iCheck/icheck.min.js"></script>
+		<script src="../../static/js/plugins/layer/laydate/laydate.js"></script>
+		<script src="../../static/js/plugins/switchery/switchery.js"></script>
+		<script src="//cdn.bootcss.com/jquery-cookie/1.4.1/jquery.cookie.min.js"></script>
+
+
+		<!--IOS开关样式-->
+		<script src="../../static/js/jquery.form.js"></script>
+		<script src="../../static/js/moment.min.js"></script>
+		<script src="../../static/js/layer/layer.js"></script>
+		<script src="../../static/js/laypage/laypage.js"></script>
+		<script src="../../static/js/laytpl/laytpl.js"></script>
+		<script src="../../static/js/lunhui.js"></script>
+
+		<!--验证控件-->
+		<link href="../../static/jQuery-Validation-Engine-2.2.6/css/validationEngine.jquery.css" rel="stylesheet" />
+		<script src="../../static/jQuery-Validation-Engine-2.2.6/js/jquery.validationEngine.js"></script>
+		<script src="../../static/jQuery-Validation-Engine-2.2.6/js/languages/jquery.validationEngine-zh_CN.js">
+		</script>
+		<script src="../../Static/main.js"></script>
+		<script src="../../static/plugins/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js"></script>
+		<script src="../../static/js/jquery.core.js"></script>
+		<script src="../../static/js/jquery.app.js"></script>
+		<script>
+			$('body').show();
+			$('.version').text(NProgress.version);
+
+
+			//提交
+			$(function() {
+				$('#form').ajaxForm({
+					type: sessionStorage.getItem("method"),
+					beforeSubmit: checkForm,
+					success: complete,
+					dataType: 'json',
+					url: sessionStorage.getItem("url") + $('form').attr('action'),
+				});
+
+				function checkForm(formData, form, options) {
+					var token = sessionStorage.getItem("token");
+					if (token == "" || token == undefined) {
+						token = ""
+					}
+					var arr = {
+						"name": "token",
+						"value": token,
+						"type": "text",
+						"required": false
+					}
+					formData.push(arr)
+					return true;
+				}
+
+				function complete(data) {
+					if (data.code == 200) {
+						layer.msg(data.msg, {
+							icon: 6,
+							time: 2000 //2秒关闭（如果不配置，默认是3秒）
+						}, function() {
+							sessionStorage.setItem("user", JSON.stringify(data.data));
+							sessionStorage.setItem("token", data.data.token);
+							parent.location.reload();
+
+						});
+					} else if (data.code == 1001 || data.code == 1003 data.code == 1002) {
+						layer.msg(data.msg, {
+							icon: 5,
+							time: 2000 //2秒关闭（如果不配置，默认是3秒）
+						}, function() {
+							sessionStorage.removeItem("token");
+						});
+
+					} else {
+						layer.msg(data.msg, {
+							icon: 5
+						});
+						return false;
+					}
+				}
+			});
+		</script>
+	</body>
+</html>

@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<title>苏北评估智地规划办公系统</title>
+		<link rel="shortcut icon" href="/favicon.ico">
+		<link href="/static/css/bootstrap.min.css?v=3.3.6" rel="stylesheet">
+		<link href="/static/css/font-awesome.min.css?v=4.4.0" rel="stylesheet">
+		<link href="/static/css/animate.css" rel="stylesheet">
+		<link href="/static/css/plugins/iCheck/custom.css" rel="stylesheet">
+		<link href="/static/css/plugins/chosen/chosen.css" rel="stylesheet">
+		<link href="/static/css/plugins/switchery/switchery.css" rel="stylesheet">
+		<link href="/static/css/style.min.css?v=4.1.0" rel="stylesheet">
+		<link href="/static/elementUI/css/index.min.css" rel="stylesheet">
+		<script src="/static/elementUI/js/vue.min.js"></script>
+		<script src="/static/elementUI/js/index.min.js"></script>
+		<style type="text/css">
+			.long-tr th {
+				text-align: center
+			}
+
+			.long-td td {
+				text-align: center
+			}
+
+			/*elementUI分页样式*/
+			.layout-pagination {
+				text-align: right;
+				margin-top: 15px;
+			}
+
+			.control-label {
+				margin-top: 7px;
+				text-align: right;
+			}
+
+			.li {
+				display: inline-block;
+				font-size: 14px;
+				padding: 10px;
+				border: 1px solid #e7eaec;
+			}
+
+			a {
+				text-decoration: none;
+				-webkit-tap-highlight-color: rgba(255, 255, 255, 0);
+				-webkit-user-select: none;
+				-moz-user-focus: none;
+				-moz-user-select: none;
+				color: black;
+			}
+
+			a:hover {
+				color: black;
+			}
+
+			.act {
+				border-bottom: 3px solid #0064c8;
+			}
+		</style>
+	</head>
+	<body class="gray-bg">
+		<div class="wrapper wrapper-content animated fadeInRight">
+			<div class="ibox float-e-margins" id="app" v-cloak>
+				<template>
+					<div class="ibox-title">
+
+						<ul>
+							<li class="li" v-show="auth(19)">
+								<a href="add.html">添加案例</a>
+							</li>
+							
+							<li class="li act" v-show="auth(20)">
+								<a href="list.html" style="color: #0064c8;">案例列表</a>
+							</li>
+						</ul>
+					</div>
+					<div class="ibox-content">
+						<!--工具条-->
+						<el-form :inline="true" class="demo-form-inline">
+							<el-form-item>
+								<div class="col-sm-3" style="padding-left: 0px;">
+									<div class="input-group">
+										<input type="text" class="form-control" v-model="key" placeholder="输入名称" />
+										<span class="input-group-btn">
+											<a type="button" class="btn btn-primary" @click="search"><i
+													class="fa fa-search"></i> 搜索</a>
+										</span>
+									</div>
+								</div>
+								<button type="button" class="btn btn-success" @click="edit">编辑</button>
+								<button type="button" class="btn btn-danger" @click="del">删除</button>
+							</el-form-item>
+						</el-form>
+
+						<div class="example-wrap">
+							<div class="example">
+								<el-table :data="tableData" border highlight-current-row v-loading="listLoading"
+									element-loading-text="拼命加载中..." @selection-change="handleSelectionChange"
+									style="width: 100%" :cell-style="finalCellStyle">
+									<el-table-column type="selection" width="60" align="center"></el-table-column>
+									<!-- <el-table-column prop="id" label="#" width="120" show-overflow-tooltip align="center"> -->
+									</el-table-column>
+									<el-table-column prop="name" label="小区名称" align="center">
+									</el-table-column>
+									<el-table-column prop="building_number" label="楼号" align="center">
+									</el-table-column>
+									<el-table-column prop="unit" label="单元号" align="center"></el-table-column>
+									<el-table-column prop="room_number" label="房号	" align="center" width="110">
+									</el-table-column>
+									<el-table-column prop="property_type" label="物业类型" align="center"></el-table-column>
+									<el-table-column prop="floors" label="位于楼层" align="center"></el-table-column>
+									<el-table-column prop="built_area" label="建筑面积" align="center"></el-table-column>
+									<el-table-column prop="transaction_date" label="交易日期" align="center"></el-table-column>
+									<el-table-column prop="transaction_amount" label="交易总价" align="center"></el-table-column>
+									<el-table-column prop="correct_amount" label="修正总价" align="center"></el-table-column>
+									<el-table-column prop="case_source" label="案例来源" align="center"></el-table-column>
+									
+									<el-table-column prop="created_at" label="提交时间" align="center">
+									</el-table-column>
+
+								</el-table>
+								<div class="layout-pagination">
+									<el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange"
+										:current-page="currentPage" :page-sizes="[10, 20, 50, 100]"
+										:page-size="pageSize" layout="total, sizes, prev, pager, next, jumper"
+										:total="totalCount">
+									</el-pagination>
+								</div>
+							</div>
+						</div>
+				</template>
+			</div>
+		</div>
+		</div>
+
+
+		<script src="/static/js/jquery.min.js?v=2.1.4"></script>
+		<script src="/static/js/bootstrap.min.js?v=3.3.6"></script>
+		<script src="/static/js/content.min.js?v=1.0.0"></script>
+		<script src="/static/js/plugins/chosen/chosen.jquery.js"></script>
+		<script src="/static/js/plugins/iCheck/icheck.min.js"></script>
+		<script src="/static/js/plugins/layer/laydate/laydate.js"></script>
+		<script src="/static/js/plugins/switchery/switchery.js"></script>
+		<!--IOS开关样式-->
+		<script src="/static/js/jquery.form.js"></script>
+		<script src="/static/js/moment.min.js"></script>
+		<script src="/static/js/layer/layer.js"></script>
+		<script src="/static/js/laypage/laypage.js"></script>
+		<script src="/static/js/laytpl/laytpl.js"></script>
+		<script src="/static/js/lunhui.js"></script>
+		<script src="/js/globe.js"></script>
+		<script>
+			$(document).ready(function() {
+				$(".i-checks").iCheck({
+					checkboxClass: "icheckbox_square-green",
+					radioClass: "iradio_square-green",
+				})
+			});
+		</script>
+
+		<script type="text/javascript">
+			var vm = new Vue({
+				el: '#app',
+				data: {
+					imgPath: '/uploads/face/',
+					//表格当前页数据
+					tableData: [],
+					//多选数组
+					multipleSelection: [],
+					//搜索条件
+					key: '',
+					//默认每页数据量
+					pageSize: 10,
+					//当前页码
+					currentPage: 1,
+					//默认数据总数
+					totalCount: 0,
+					//列表加载遮罩
+					listLoading: false,
+				},
+				methods: {
+					finalCellStyle(row, column, rowIndex, columnIndex) {
+						console.log(123)
+						console.log(row.column)
+						if (row.column.label === '状态' && row.row.status == 1) {
+							return 'color:red'
+						} else if (row.column.label === '状态' && row.row.status == 2) {
+							return 'color:blue'
+						} else if (row.column.label === '状态' && row.row.status == 3) {
+							return 'color:yellow'
+						}
+					},
+					//从服务器读取数据
+					loadData(key, currentPage, pageSize) {
+						vm.listLoading = true;
+						let user = JSON.parse(sessionStorage.getItem("user"));
+
+						let data = httpCurl("cases/getList", {
+							key: key,
+							page: currentPage,
+							rows: pageSize,
+							// t:user.uid
+						});
+
+						vm.tableData = [];
+						vm.totalCount = data.count;
+						for (var i = 0; i < data.data.info.length; i++) {
+							if (data.data.info[i]) {
+								vm.tableData.push(data.data.info[i]);
+							}
+						}
+						vm.listLoading = false;
+					},
+					dateFormat: function(row, column) {
+						var date = row[column.property];
+						if (date == undefined) {
+							return "";
+						}
+						return moment(date * 1000).format("YYYY-MM-DD HH:mm:ss");
+					},
+					
+					statusFormat: function(row, column) {
+						var val = row.status;
+						if (val == 1) {
+							return "待批准"
+						} else if (val == 2) {
+							return "批准"
+						} else if (val == 3) {
+							return "拒绝"
+						}
+					},
+
+					openMessage(type, message) {
+						this.$message({
+							type: type,
+							duration: 1500,
+							message: message
+						});
+					},
+
+					//每页显示数据量变更
+					handleSizeChange(val) {
+						this.pageSize = val;
+						this.loadData(this.key, this.currentPage, this.pageSize);
+					},
+					//页码变更
+					handleCurrentChange(val) {
+						this.currentPage = val;
+						this.loadData(this.key, this.currentPage, this.pageSize);
+					},
+					//多选响应
+					handleSelectionChange(val) {
+						this.multipleSelection = val;
+					},
+					//搜索
+					search() {
+						this.loadData(this.key, this.currentPage, this.pageSize);
+						vm.listLoading = false;
+					},
+					//添加
+					add() {
+						openAdd();
+					},
+					//编辑
+					edit() {
+						if (this.multipleSelection.length != 1) {
+							vm.openMessage('warning', '请选择一条数据进行操作！');
+							return;
+						}
+						var id = 0;
+						this.multipleSelection.forEach((row) => {
+							id = row.id;
+						})
+						window.location.href = "edit.html?id=" + id
+					},
+					//查看
+					detail(id) {
+						openDetail(id);
+					},
+					//批量删除
+					del(id) {
+						if (isNaN(id)) {
+							if (this.multipleSelection.length == 0) {
+								vm.openMessage('warning', '请选择至少一条数据进行删除！');
+								return;
+							}
+							var array = [];
+							this.multipleSelection.forEach((row) => {
+								array.push(row.id);
+							})
+							array = array.toString();
+						} else {
+							array = id;
+						}
+
+						this.$confirm('此操作将永久删除该数据, 是否继续?', '提示', {
+							confirmButtonText: '确定',
+							cancelButtonText: '取消',
+							type: 'warning'
+						}).then(() => {
+							let res = httpCurl("cases/del", {
+								id: array
+							})
+							if (res.code == 200) {
+								vm.openMessage('success', res.msg);
+								vm.loadData(vm.key, vm.currentPage, vm.pageSize);
+							} else {
+								vm.openMessage('error', res.msg);
+							}
+						}).catch(() => {
+							vm.openMessage('info', '已取消删除');
+						});
+					}
+				}
+			})
+
+			//载入数据
+			vm.loadData(vm.key, vm.currentPage, vm.pageSize);
+
+
+			function openAdd() {
+				layer.open({
+					type: 2,
+					title: '添加',
+					shadeClose: false,
+					scrollbar: false,
+					maxmin: true,
+					shade: 0.2,
+					area: ['45%', '85%'],
+					content: 'add.html',
+				});
+			}
+
+			function openEdit(id) {
+				layer.open({
+					type: 2,
+					title: '编辑信息',
+					shadeClose: false,
+					scrollbar: false,
+					maxmin: true,
+					shade: 0.2,
+					area: ['45%', '85%'],
+					content: 'wait.html?id=' + id,
+				});
+			}
+		</script>
+	</body>
+</html>

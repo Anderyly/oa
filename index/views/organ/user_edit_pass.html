@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<title>苏北评估智地规划办公系统</title>
+		<link rel="shortcut icon" href="/public/favicon.ico">
+		<link href="/static/css/bootstrap.min.css?v=3.3.6" rel="stylesheet">
+		<link href="/static/css/font-awesome.min.css?v=4.4.0" rel="stylesheet">
+		<link href="/static/css/animate.css" rel="stylesheet">
+		<!--<link href="/static/layui/css/layui.css" rel="stylesheet">-->
+		<link href="/static/css/plugins/iCheck/custom.css" rel="stylesheet">
+		<link href="/static/css/plugins/chosen/chosen.css" rel="stylesheet">
+		<link href="/static/css/plugins/switchery/switchery.css" rel="stylesheet">
+		<link href="/static/css/style.min.css?v=4.1.0" rel="stylesheet">
+		<link href="/static/elementUI/css/index.min.css" rel="stylesheet">
+		<link href="/static/select2/css/select2.css" rel="stylesheet" />
+		<!-- <link rel="stylesheet" href="/static/selectpage/selectpage.css" type="text/css"> -->
+
+		<!-- <link href="/static/css/bootstrapValidator.css" rel="stylesheet" /> -->
+		<style type="text/css">
+			.long-tr th {
+				text-align: center
+			}
+
+			.long-td td {
+				text-align: center
+			}
+
+			/*elementUI分页样式*/
+			.layout-pagination {
+				text-align: right;
+				margin-top: 15px;
+			}
+
+			.control-label {
+				margin-top: 7px;
+				text-align: right;
+			}
+
+			.req {
+				color: red;
+				font-size: 16px;
+
+			}
+		</style>
+	</head>
+	<body class="gray-bg">
+		<div class="wrapper wrapper-content animated fadeInRight">
+			<div class="row">
+				<div class="col-sm-12" id="app">
+					<div class="ibox float-e-margins">
+						<!-- 						               <div class="ibox-title">
+						                   <h5>添加菜单</h5>
+						               </div> -->
+						<div class="ibox-content">
+							<form @submit.prevent="submit">
+								
+								<div class="form-group">
+									<label class="col-sm-3 control-label">用户名：</label>
+									<div class="col-sm-4">
+										<input id="account" name="account" class="form-control" type="text"
+											:value="account" disabled="disabled">
+									</div>
+								</div>
+
+								<div class="form-group">
+									<label class="col-sm-3 control-label"><span class="req">*</span> 登入密码：</label>
+									<div class="col-sm-4">
+										<input id="password" name="password" class="form-control" type="text"
+											:value="postData.password" v-model="postData.password">
+									</div>
+								</div>
+
+								<div class="form-group">
+									<label class="col-sm-3 control-label"><span class="req">*</span> 确认密码：</label>
+									<div class="col-sm-4">
+										<input id="rePassword" name="rePassword" class="form-control" type="text"
+											:value="postData.rePassword" v-model="postData.rePassword" required="required">
+									</div>
+								</div>
+
+								<div class="form-group">
+									<div class="col-sm-8 col-sm-offset-3">
+										<button id="btnSubmit" class="btn btn-primary" type="submit"><i
+												class="fa fa-save"></i> 提交</button>
+									</div>
+								</div>
+							</form>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<script src="/static/js/jquery.min.js?v=2.1.4"></script>
+		<script src="/static/elementUI/js/vue.min.js"></script>
+		<script src="/static/elementUI/js/index.min.js"></script>
+		<script src="/static/laydate/laydate.js"></script>
+		<!-- <script src="/static/js/bootstrapValidator.js"></script> -->
+		<script src="/static/js/bootstrap.min.js?v=3.3.6"></script>
+		<script src="/static/js/content.min.js?v=1.0.0"></script>
+		<script src="/static/js/plugins/chosen/chosen.jquery.js"></script>
+		<script src="/static/js/plugins/iCheck/icheck.min.js"></script>
+		<script src="/static/js/plugins/layer/laydate/laydate.js"></script>
+		<script src="/static/js/plugins/switchery/switchery.js"></script>
+		<script src="/static/select2/js/select2.js"></script>
+		<!-- <script type="text/javascript" src="/static/selectpage/selectpage.js"></script> -->
+
+		<!--IOS开关样式-->
+		<!-- <script src="/static/js/jquery.form.js"></script> -->
+		<script src="/static/js/moment.min.js"></script>
+		<script src="/static/js/layer/layer.js"></script>
+		<script src="/static/js/laypage/laypage.js"></script>
+		<script src="/static/js/laytpl/laytpl.js"></script>
+		<script src="/static/js/lunhui.js"></script>
+		<script src="/js/globe.js"></script>
+
+		<script type="text/javascript">
+			var vm = new Vue({
+				el: '#app',
+				data: {
+					account: "",
+					postData: {
+						password: "",
+						rePassword: "",
+						uid: "",
+					}
+				},
+				methods: {
+					submit() {
+						this.postData.unit = $("#v_department option:checked").val();
+						let data = httpCurl("user/edit", this.postData)
+						if (data.code == 200) {
+							layer.msg(data.msg, {
+								icon: 6,
+								time: 2000
+							}, function() {
+								parent.location.reload();
+							});
+						} else {
+							layer.msg(data.msg, {
+								icon: 5,
+								time: 2000
+							});
+						}
+					}
+
+				},
+				mounted() {
+					this.postData.uid = getUrlKey("id");
+					let data = httpCurl("user/detail", {
+						id: this.postData.uid
+					})
+					if (data.code == 200) {
+						this.account = data.data.account
+					} else {
+						layer.msg(data.msg, {
+							icon: 5,
+							time: 2000
+						});
+					}
+				}
+			});
+		</script>
+	</body>
+</html>

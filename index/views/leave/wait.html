@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<title>苏北评估智地规划办公系统</title>
+		<link href="/static/css/bootstrap.min.css?v=3.3.6" rel="stylesheet">
+		<link href="/static/css/font-awesome.min.css?v=4.4.0" rel="stylesheet">
+		<link href="/static/css/animate.css" rel="stylesheet">
+		<!--<link href="/static/layui/css/layui.css" rel="stylesheet">-->
+		<link href="/static/css/plugins/iCheck/custom.css" rel="stylesheet">
+		<link href="/static/css/plugins/chosen/chosen.css" rel="stylesheet">
+		<link href="/static/css/plugins/switchery/switchery.css" rel="stylesheet">
+		<link href="/static/css/style.min.css?v=4.1.0" rel="stylesheet">
+		<link href="/static/elementUI/css/index.min.css" rel="stylesheet">
+		<script src="/static/elementUI/js/vue.min.js"></script>
+		<script src="/static/elementUI/js/index.min.js"></script>
+		<script src="/static/laydate/laydate.js"></script>
+		<style type="text/css">
+			.long-tr th {
+				text-align: center
+			}
+
+			.long-td td {
+				text-align: center
+			}
+
+			/*elementUI分页样式*/
+			.layout-pagination {
+				text-align: right;
+				margin-top: 15px;
+			}
+
+			.control-label {
+				margin-top: 7px;
+				text-align: right;
+			}
+
+			li {
+				display: inline-block;
+				font-size: 14px;
+				padding: 10px;
+				border: 1px solid #e7eaec;
+			}
+
+			a {
+				text-decoration: none;
+				-webkit-tap-highlight-color: rgba(255, 255, 255, 0);
+				-webkit-user-select: none;
+				-moz-user-focus: none;
+				-moz-user-select: none;
+				color: black;
+			}
+
+			a:hover {
+				color: black;
+			}
+
+			.act {
+				border-bottom: 3px solid #0064c8;
+			}
+
+			.xxx {
+				padding-top: 50px
+			}
+
+			.h3downline {
+				border-bottom: 1px solid #eee;
+				padding-bottom: 5px;
+				margin-bottom: 15px;
+				font-weight: bold;
+				color: black;
+			}
+		</style>
+	</head>
+	<body class="gray-bg">
+		<div class="wrapper wrapper-content animated fadeInRight" id="app">
+			<div class="row">
+				<div class="col-sm-12">
+					<div class="ibox float-e-margins">
+						<div class="ibox-title">
+
+							<ul>
+								<li class="" v-show="auth(105)">
+									<a href="my.html">我的考勤</a>
+								</li>
+								<li class="" v-show="auth(107)">
+									<a href="add.html" style="">新增请假</a>
+								</li>
+								<li class="" v-show="auth(108)">
+									<a href="list.html">请假列表</a>
+								</li>
+							</ul>
+						</div>
+						<div class="ibox-content row" style="margin-left: 1px;margin-right: 1px;">
+							<div class="col-sm-6">
+								<h3 class="h3downline">新增请假</h3>
+								<form @submit.prevent="submit">
+									<div class="form-group">
+										<label class="col-sm-3 control-label">请假类型：</label>
+										<div class="col-sm-9">
+											<select id="type" name="type" class="form-control" required="required"
+												v-model="res.type" :disabled="status == 2 || status == 3">
+												<option value="1">事假</option>
+												<option value="2">婚嫁</option>
+												<option value="3">年假</option>
+												<option value="4">产假</option>
+												<option value="5">病假</option>
+											</select>
+										</div>
+									</div>
+									<!-- <br><br><br> -->
+									<div class="form-group xxx">
+										<label class="col-sm-3 control-label">请假人：</label>
+										<div class="col-sm-9">
+											<input id="nickname" class="form-control" type="text" disabled="disabled"
+												:value="res.nickname" disabled="disabled">
+										</div>
+									</div>
+									<div class="form-group xxx">
+										<label class="col-sm-3 control-label">请假时间：</label>
+										<div class="col-sm-9">
+											<input type="text" id="start_time" name="start_time"
+												class="form-control laydate" required="required"
+												v-model="res.start_time" :disabled="status == 2 || status == 3">
+										</div>
+									</div>
+									<div class="form-group xxx">
+										<label class="col-sm-3 control-label">截至时间：</label>
+										<div class="col-sm-9">
+											<input type="text" id="end_time" name="end_time" class="form-control"
+												required="required" v-model="res.end_time"
+												:disabled="status == 2 || status == 3">
+										</div>
+									</div>
+
+									<div class="form-group xxx">
+										<label class="col-sm-3 control-label">请假天数：</label>
+										<div class="col-sm-9">
+											<input id="duration" name="duration" class="form-control" type="number"
+												v-model="res.duration" required="required"
+												:disabled="status == 2 || status == 3">
+										</div>
+									</div>
+
+									<div class="form-group xxx">
+										<label class="col-sm-3 control-label">请假内容：</label>
+										<div class="col-sm-9">
+											<textarea id="content" name="content" class="form-control" type="text"
+												v-model="res.content" required="required" cols="5" rows="4"
+												style="resize: none;" :disabled="status == 2 || status == 3"></textarea>
+										</div>
+									</div>
+
+									<div class="form-group" style="padding-top: 110px;">
+										<label class="col-sm-3 control-label">创建时间：</label>
+										<div class="col-sm-9">
+											<input type="text" id="created_at" name="created_at" class="form-control"
+												disabled="disabled" :value="res.created_at">
+										</div>
+									</div>
+
+									<script>
+										
+									</script>
+
+									<div class="form-group xxx">
+										<div class="col-sm-8 col-sm-offset-3">
+											<button id="btnSubmit" class="btn btn-primary" type="submit"
+												:disabled="status == 2 || status == 3"> 保存</button>
+										</div>
+									</div>
+								</form>
+
+							</div>
+							<div class="col-sm-6">
+								<h3 class="h3downline">批准请假条</h3>
+								<div>
+									<div class="form-group">
+										<label class="col-sm-3 control-label">备注：</label>
+										<div class="col-sm-9">
+											<textarea id="meta" name="meta" class="form-control" type="text"
+												v-model="res.meta" cols="5" rows="4" style="resize: none;"
+												:disabled="status == 2 || status == 3"></textarea>
+										</div>
+									</div>
+
+									<div class="form-group xxx" style="padding-top: 110px;">
+										<label class="col-sm-3 control-label">操作人：</label>
+										<div class="col-sm-9">
+											<input id="nickname" class="form-control" type="text" disabled="disabled"
+												:value="opName">
+										</div>
+									</div>
+
+									<div class="form-group xxx">
+										<label class="col-sm-3 control-label">批准时间：</label>
+										<div class="col-sm-9">
+											<input type="text" id="created_at1" name="created_at" class="form-control"
+												disabled="disabled" :value="opTime">
+										</div>
+									</div>
+
+
+									<div class="form-group xxx">
+										<div class="col-sm-8 col-sm-offset-3">
+											<button id="btnSubmit" class="btn btn-primary" type="submit"
+												:disabled="status == 2 || status == 3" @click="pizhun(2)"> 同意</button>
+											<button id="btnSubmit" class="btn btn-warning" type="submit"
+												:disabled="status == 2 || status == 3" @click="pizhun(3)"> 不同意</button>
+											<button type="button" class="btn btn-primary"
+												onclick="javascript:history.back(-1);return false;">返 回</button>
+										</div>
+									</div>
+								</div>
+
+							</div>
+
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<script src="/static/js/jquery.min.js?v=2.1.4"></script>
+		<script src="/static/js/bootstrap.min.js?v=3.3.6"></script>
+		<script src="/static/js/content.min.js?v=1.0.0"></script>
+		<script src="/static/js/plugins/chosen/chosen.jquery.js"></script>
+		<script src="/static/js/plugins/iCheck/icheck.min.js"></script>
+		<!-- <script src="/static/js/plugins/layer/laydate/laydate.js"></script> -->
+		<script src="/static/js/plugins/switchery/switchery.js"></script>
+		<!--IOS开关样式-->
+		<script src="/static/js/jquery.form.js"></script>
+		<script src="/static/js/moment.min.js"></script>
+		<script src="/static/js/layer/layer.js"></script>
+		<script src="/static/js/laypage/laypage.js"></script>
+		<script src="/static/js/laytpl/laytpl.js"></script>
+		<script src="/static/js/lunhui.js"></script>
+		<script src="/js/globe.js"></script>
+
+		<script>
+			$(document).ready(function() {
+				$(".i-checks").iCheck({
+					checkboxClass: "icheckbox_square-green",
+					radioClass: "iradio_square-green",
+				});
+			});
+		</script>
+
+
+		<script type="text/javascript">
+			var vm = new Vue({
+				el: '#app',
+				data: {
+					user: {},
+					res: {},
+					opName: "",
+					status: "",
+					id: 0,
+					opTime: ""
+				},
+				methods: {
+
+					submit() {
+						let postData = {
+							id: this.id,
+							type: this.res.type,
+							start_time: this.res.start_time,
+							end_time: this.res.end_time,
+							content: this.res.content,
+							duration: this.res.duration
+						}
+
+						let data = httpCurl("leave/edit", postData)
+						if (data.code == 200) {
+							layer.msg(data.msg, {
+								icon: 6,
+								time: 2000
+							}, function() {
+								location.reload()
+							});
+						} else {
+							layer.msg(data.msg, {
+								icon: 5,
+								time: 2000
+							});
+						}
+					},
+					pizhun(status) {
+						let postData = {
+							operate_uid: this.user.uid,
+							meta: this.res.meta,
+							id: this.id,
+							status: status
+						}
+
+						let data = httpCurl("leave/verify", postData)
+						if (data.code == 200) {
+							layer.msg(data.msg, {
+								icon: 6,
+								time: 2000
+							}, function() {
+								location.reload()
+							});
+						} else {
+							layer.msg(data.msg, {
+								icon: 5,
+								time: 2000
+							});
+						}
+
+
+					},
+					getTime() {
+						var myDate = new Date;
+						var year = myDate.getFullYear(); //获取当前年
+						var mon = myDate.getMonth() + 1; //获取当前月
+						var date = myDate.getDate(); //获取当前日
+						var h = myDate.getHours(); //获取当前小时数(0-23)
+						var m = myDate.getMinutes(); //获取当前分钟数(0-59)
+						var s = myDate.getSeconds(); //获取当前秒
+						return year + "-" + mon + "-" + date + " " + h + ":" + m + ":" + s;
+
+					},
+
+				},
+				mounted() {
+					this.id = getUrlKey("id");
+					let user = sessionStorage.getItem("user");
+					user = JSON.parse(user);
+					this.user = user;
+
+					let data = httpCurl("leave/detail", {
+						id: this.id
+					})
+
+					this.res = data.data;
+					console.log(this.res)
+
+					this.status = data.data.status
+					if (data.data.status == 2) {
+						this.opName = data.data.opName;
+						this.opTime = data.data.operate_at;
+					} else {
+						this.opName = this.user.nickname
+						this.opTime = this.getTime()
+					}
+
+
+
+
+					console.log(user)
+				}
+			});
+			
+			//执行一个laydate实例
+			laydate.render({
+				elem: '#start_time',
+				type: 'datetime',
+				format: 'yyyy-MM-dd',
+				done: function(value, date) {
+					// $("end_time").val(value)
+					vm.$data.res.start_time = value
+				}
+			});
+			laydate.render({
+				elem: '#end_time',
+				type: 'datetime',
+				format: 'yyyy-MM-dd',
+				done: function(value, date) {
+					// $("end_time").val(value)
+					vm.$data.res.end_time = value
+				}
+			});
+		</script>
+	</body>
+</html>
